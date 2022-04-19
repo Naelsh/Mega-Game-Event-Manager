@@ -16,16 +16,16 @@ public class ActivityController : BaseController
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var activity = _service.GetById(id);
+        var activity = await _service.GetById(id);
         return Ok(activity);
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var activities = _service.GetAll();
+        var activities = await _service.GetAll();
         return Ok(activities);
     }
 
@@ -37,16 +37,16 @@ public class ActivityController : BaseController
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, ActivityUpdateRequest model)
+    public async Task<IActionResult> Put(int id, ActivityUpdateRequest model)
     {
-        _service.Update(id, model);
+        await _service.Update(id, model);
         return Ok(new { message = "Activity updated successfully" });
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        _service.Delete(id);
+        await _service.Delete(id);
         return Ok(new { message = "Activity deleted succesfully" });
     }
 }

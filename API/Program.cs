@@ -11,7 +11,7 @@ var services = builder.Services;
 services.AddCors();
 services.AddControllers();
 
-services.AddAutoMapper(typeof(Program));
+services.AddAutoMapper(typeof(AutoMapperProfile));
 services.AddDbContext<DataContext>();
 
 services.AddScoped<IActivityService, ActivityService>();
