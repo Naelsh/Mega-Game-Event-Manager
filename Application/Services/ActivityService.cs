@@ -15,9 +15,8 @@ public interface IActivityService
     Task<IEnumerable<Activity>> GetAll();
     Task<Activity> GetById(int id);
     void Post(ActivityPostRequest model);
-    void Delete(int id);
-    void Update(int id, ActivityUpdateRequest model);
-
+    Task Delete(int id);
+    Task Update(int id, ActivityUpdateRequest model);
 }
 
 public class ActivityService : IActivityService
@@ -54,14 +53,14 @@ public class ActivityService : IActivityService
         _context.SaveChanges();
     }
 
-    public async void Delete(int id)
+    public async Task Delete(int id)
     {
         var activity = await GetActivityById(id);
         _context.Activities.Remove(activity);
         _context.SaveChanges();
     }
 
-    public async void Update(int id, ActivityUpdateRequest model)
+    public async Task Update(int id, ActivityUpdateRequest model)
     {
         var activity = await GetActivityById(id);
 
