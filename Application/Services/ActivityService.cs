@@ -17,7 +17,6 @@ public interface IActivityService
     void Post(ActivityPostRequest model);
     Task Delete(int id);
     Task Update(int id, ActivityUpdateRequest model);
-
 }
 
 public class ActivityService : IActivityService
