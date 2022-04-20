@@ -1,25 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import Activity from './Activities/Activity';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      activities: [],
+      DataIsLoaded: false
+    };
+  }
+
+  componentDidMount() {
+    fetch("https://localhost:7160/activity")
+    .then((result) => result.json())
+    .then((json) => {
+      this.setState({
+        activities: json,
+        DataIsLoaded: true
+      });
+    })
+  }
+
+  render() {
+    const {DataIsLoaded, activities} = this.state;
+    if (!DataIsLoaded) {
+      return (
+        <div>
+          <h1>Please wait activities are loading...</h1>
+        </div>
+      );
+    }
+
+
+    return (
+      <div className="App">
+        <h1> Fetch data from an api in react </h1>
+        {
+          activities.map((activity) => (
+            <ul key = {activity.id}>
+              <Activity activity = {activity}></Activity>
+            </ul>
+          ))
+        }
+      </div>
+    );
+  }
 }
 
 export default App;
