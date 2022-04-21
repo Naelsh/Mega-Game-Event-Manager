@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,31 +13,31 @@ namespace Persistence
     {
         public DbSet<Activity> Activities { get; set; }
 
-        public DataContext() { }
+        protected readonly IConfiguration Configuration;
 
-        public DataContext(DbContextOptions options) : base(options) { }
+        public DataContext(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            #region ConnectionStrings
-            // Laptop
-            string connectionString =
-                @"Data Source=DESKTOP-EJ7V12L\SQLEXPRESS01;" +
-                @"Initial Catalog = MegaGameEventManager;" +
-                @"Integrated Security=true";
-
-            //Stationär
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("WebApiDatabase"));
+            //#region ConnectionStrings
+            //// Laptop
             //string connectionString =
-            //    @"Data Source=DESKTOP-JC3MCVE;" +
+            //    @"Data Source=DESKTOP-EJ7V12L\SQLEXPRESS01;" +
             //    @"Initial Catalog = MegaGameEventManager;" +
             //    @"Integrated Security=true";
-            #endregion
 
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(connectionString);
-            }
-            base.OnConfiguring(optionsBuilder);
+            ////Stationär
+            ////string connectionString =
+            ////    @"Data Source=DESKTOP-JC3MCVE;" +
+            ////    @"Initial Catalog = MegaGameEventManager;" +
+            ////    @"Integrated Security=true";
+            //#endregion
+
+            //base.OnConfiguring(optionsBuilder);
         }
     }
 }
