@@ -23,21 +23,7 @@ namespace Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("WebApiDatabase"));
-            //#region ConnectionStrings
-            //// Laptop
-            //string connectionString =
-            //    @"Data Source=DESKTOP-EJ7V12L\SQLEXPRESS01;" +
-            //    @"Initial Catalog = MegaGameEventManager;" +
-            //    @"Integrated Security=true";
-
-            ////Stationär
-            ////string connectionString =
-            ////    @"Data Source=DESKTOP-JC3MCVE;" +
-            ////    @"Initial Catalog = MegaGameEventManager;" +
-            ////    @"Integrated Security=true";
-            //#endregion
-
-            //base.OnConfiguring(optionsBuilder);
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }
