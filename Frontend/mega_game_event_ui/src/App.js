@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import Activity from './Activities/Activity';
+import ActivityFormController from './Activities/ActivityForm';
 
 class App extends React.Component {
   constructor(props){
@@ -43,6 +44,7 @@ class App extends React.Component {
             </ul>
           ))
         }
+        <ActivityFormController/>
       </div>
     );
   }
