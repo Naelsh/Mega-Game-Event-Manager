@@ -1,18 +1,27 @@
-﻿using Application.Models.Activity;
+﻿using Application.Helpers;
+using Application.Models.Activity;
 using Application.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace API.Controllers;
 
 public class ActivityController : BaseController
 {
     private readonly IActivityService _service;
+    private readonly IMapper _mapper;
+    private readonly AppSettings _appSettings;
 
     public ActivityController(
-        IActivityService service
+        IActivityService service,
+        IMapper mapper,
+        IOptions<AppSettings> appSettings
         )
     {
         _service = service;
+        _mapper = mapper;
+        _appSettings = appSettings.Value;
     }
 
     [HttpGet("{id}")]
