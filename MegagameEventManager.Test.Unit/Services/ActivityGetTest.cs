@@ -1,7 +1,6 @@
 ﻿using Application.Helpers;
 using Application.Models.Activity;
 using Application.Services;
-using Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
@@ -14,46 +13,41 @@ using Xunit;
 
 namespace MegagameEventManager.Test.Unit.Services
 {
-    public class ActivityTest
+    public class ActivityGetTest
     {
         WebApplication _app;
 
-        public ActivityTest()
+        public ActivityGetTest()
         {
             _app = Build();
         }
 
         [Fact]
-        public void Post_ValidInput_NewActivityCreated()
+        public async void GetAll_NoEntriesInDataBase_ReturnEmptyList()
         {
-            string expected = "Event Title";
-            int expectedAmount = 1;
+            int expected = 0;
+            var activityService = _app.Services.GetService<IActivityService>();
+            var returnValue = await activityService.GetAll();
+            Assert.Equal(expected, returnValue.Count());
+        }
+
+        [Fact]
+        public async void GetAll_EntryInDatabase_ReturnList()
+        {
+            int expected = 1;
 
             ActivityPostRequest model = new ActivityPostRequest
             {
                 Name = "Event Title",
                 StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(1),
-                Description = "Event description",
-                Location = "Event location",
+                EndDate = DateTime.Now.AddDays(1)
             };
 
             var activityService = _app.Services.GetService<IActivityService>();
             activityService.Post(model);
 
-            Activity activity;
-            int actualAmount = 0;
-            using (var scope = _app.Services.CreateScope())
-            {
-                InMemoryDataContext dataContext = scope.ServiceProvider.GetService<InMemoryDataContext>();
-                activity = dataContext.Activities.SingleOrDefault(a => a.Id == 1);
-                actualAmount = dataContext.Activities.Count();
-            }
-
-            string actual = activity.Name;
-
-            Assert.Equal(expected, actual);
-            Assert.Equal(expectedAmount, actualAmount);
+            var returnValue = await activityService.GetAll();
+            Assert.Equal(expected, returnValue.Count());
         }
 
         private static WebApplication Build()
