@@ -44,6 +44,12 @@ public class ActivityService : IActivityService
     public void Post(ActivityPostRequest model)
     {
         // validation
+        if (DateTime.Compare(model.StartDate, DateTime.MinValue) == 0)
+            throw new AppException("Event '" + model.Name + "' start date not set");
+        if (DateTime.Compare(model.EndDate, DateTime.MinValue) == 0)
+            throw new AppException("Event '" + model.Name + "' end date not set");
+        if (model.Name == null)
+            throw new AppException("Event has no name");
         if (DateTime.Compare(model.StartDate, model.EndDate) > 0)
             throw new AppException("Event '" + model.Name + "' start date after end date");
 
