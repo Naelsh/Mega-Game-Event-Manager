@@ -2,11 +2,11 @@ import React, { useState } from "react";
 // import Calendar from 'react-calendar';
 import { Button, Form, Segment } from 'semantic-ui-react'
 import 'react-calendar/dist/Calendar.css';
-import '../Styles/Calendar.css';
+import '../../Styles/Calendar.css';
 
-function ActivityFormController () {
+function ActivityFormController (editId) {
   const [inputs, setInputs] = useState({
-    id:"",
+    id: editId || "",
     name:"",
     startDate:"",
     endDate:"",
@@ -32,7 +32,7 @@ function ActivityFormController () {
   }
   
   return (
-    <Segment inverted>
+    <Segment>
       <Form autocomplete="off">
         <Form.Input placeholder="Name" value={inputs.name} name="name" onChange={handleInputChange}/>
         <Form.TextArea placeholder='Description' value={inputs.description } name='description' onChange={handleInputChange}/>

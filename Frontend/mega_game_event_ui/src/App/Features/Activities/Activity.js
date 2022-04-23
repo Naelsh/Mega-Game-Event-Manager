@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 import './Activity.css';
 
 function Activity (props) {
@@ -9,6 +10,7 @@ function Activity (props) {
       <p><strong>Ends:</strong> {props.activity.endDate}</p>
       <p><strong>Location:</strong> {props.activity.location}</p>
       <p>{props.activity.description}</p>
+      <Button>Edit</Button>
     </li>
   );
 }
