@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 public interface IFactionService
 {
-    Task<IEnumerable<Faction>> GetAll(int activityId);
+    Task<IEnumerable<Faction>> GetAllFactionForEventByID(int activityId);
     Task<Faction> GetById(int id);
     void Post(FactionPostRequest model);
     Task Delete(int id);
@@ -31,7 +31,7 @@ public class FactionService : IFactionService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Faction>> GetAll(int activityId)
+    public async Task<IEnumerable<Faction>> GetAllFactionForEventByID(int activityId)
     {
         return await _context.Factions.Where(f => f.Activity.Id == activityId).ToListAsync();
     }
@@ -39,14 +39,19 @@ public class FactionService : IFactionService
     public async Task<Faction> GetById(int id)
     {
         Faction? faction = await GetFactionById(id);
+        if (faction == null)
+            throw new AppException("Faction not found");
         return faction;
     }
 
     public void Post(FactionPostRequest model)
     {
-        // validation
-
         var faction = _mapper.Map<Faction>(model);
+        var activity = _context.Activities.Find(model.ActivityId);
+        if (activity == null)
+            throw new AppException("Activity not found when creating faction", faction);
+
+        faction.Activity = activity;
 
         _context.Factions.Add(faction);
         _context.SaveChanges();
@@ -55,6 +60,9 @@ public class FactionService : IFactionService
     public async Task Delete(int id)
     {
         var faction = await GetFactionById(id);
+        if (faction == null)
+            throw new AppException("Faction could not be found");
+
         _context.Factions.Remove(faction);
         _context.SaveChanges();
     }
@@ -62,8 +70,15 @@ public class FactionService : IFactionService
     public async Task Update(int id, FactionUpdateRequest model)
     {
         var faction = await GetFactionById(id);
+        if (faction == null)
+            throw new AppException("Faction could not be found");
+        var activity = await _context.Activities.FindAsync(model.ActivityId);
+        if (activity == null)
+            throw new AppException("Activity could not be found");
 
         _mapper.Map(model, faction);
+        faction.Activity = activity;
+
         _context.Factions.Update(faction);
         _context.SaveChanges();
     }
