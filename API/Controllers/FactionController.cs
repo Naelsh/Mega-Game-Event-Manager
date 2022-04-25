@@ -1,9 +1,7 @@
-﻿using Application.Models.Activity;
-using Application.Models.Faction;
+﻿using Application.Models.Faction;
 using Application.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace API.Controllers;
 

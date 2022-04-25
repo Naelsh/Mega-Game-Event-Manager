@@ -1,13 +1,11 @@
 ﻿namespace Application.Services;
 
 using Application.Helpers;
-using Application.Models.Activity;
 using Application.Models.Faction;
 using AutoMapper;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
