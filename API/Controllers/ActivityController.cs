@@ -1,5 +1,6 @@
 ﻿using Application.Models.Activity;
 using Application.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -7,12 +8,15 @@ namespace API.Controllers;
 public class ActivityController : BaseController
 {
     private readonly IActivityService _service;
+    private readonly IMapper _mapper;
 
     public ActivityController(
-        IActivityService service
+        IActivityService service,
+        IMapper mapper
         )
     {
         _service = service;
+        _mapper = mapper;
     }
 
     [HttpGet("{id}")]
