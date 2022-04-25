@@ -13,4 +13,5 @@ public class Faction
     public string? Description { get; set; }
 
     public List<Role> Roles { get; set; } = new List<Role>();
+    public Activity? Activity { get; set; }
 }
