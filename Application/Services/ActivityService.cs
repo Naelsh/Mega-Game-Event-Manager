@@ -32,12 +32,12 @@ public class ActivityService : IActivityService
 
     public async Task<IEnumerable<Activity>> GetAll()
     {
-        return await _context.Activities.ToListAsync();
+        return await _context.Activities.Where(ac => ac.IsDeleted != true).ToListAsync();
     }
 
     public async Task<Activity> GetById(int id)
     {
-        Activity? activity = await GetActivityById(id);
+        Activity activity = await GetActivityById(id);
         return activity;
     }
 
@@ -56,7 +56,8 @@ public class ActivityService : IActivityService
     public async Task Delete(int id)
     {
         var activity = await GetActivityById(id);
-        _context.Activities.Remove(activity);
+        activity.IsDeleted = true;
+        _context.Activities.Update(activity);
         _context.SaveChanges();
     }
 
@@ -77,6 +78,8 @@ public class ActivityService : IActivityService
         var activity = await _context.Activities.FindAsync(id);
         if (activity == null)
             throw new KeyNotFoundException("Event not found");
+        if (activity.IsDeleted)
+            throw new AppException("Event not found");
         return activity;
     }
 }
