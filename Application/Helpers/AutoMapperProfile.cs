@@ -37,7 +37,7 @@ public class AutoMapperProfile : Profile
             ));
 
         CreateMap<RolePostRequest, Role>();
-        CreateMap<RolePutRequest, Role>()
+        CreateMap<RoleUpdateRequest, Role>()
             .ForAllMembers(x => x.Condition(
                 (src, dest, prop) =>
                 {
