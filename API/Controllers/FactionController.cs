@@ -26,7 +26,7 @@ public class FactionController : BaseController
         return Ok(faction);
     }
 
-    [HttpGet("{activityId}")]
+    [HttpGet("getAll/{activityId}")]
     public async Task<IActionResult> GetAllForActivity(int activityId)
     {
         var factions = await _service.GetAllFactionForEventByID(activityId);
