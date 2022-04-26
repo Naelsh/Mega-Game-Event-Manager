@@ -16,6 +16,7 @@ services.AddDbContext<DataContext>();
 
 services.AddScoped<IActivityService, ActivityService>();
 services.AddScoped<IFactionService, FactionService>();
+services.AddScoped<IRoleService, RoleService>();
 
 var app = builder.Build();
 
