@@ -15,6 +15,7 @@ services.AddAutoMapper(typeof(AutoMapperProfile));
 services.AddDbContext<DataContext>();
 
 services.AddScoped<IActivityService, ActivityService>();
+services.AddScoped<IFactionService, FactionService>();
 
 var app = builder.Build();
 
