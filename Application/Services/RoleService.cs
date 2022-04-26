@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public interface IRoleService
 {
-    Task<IEnumerable<Role>> GetAllFactionForFactionnByID(int factionId);
+    Task<IEnumerable<Role>> GetAllRolesForFactionByID(int factionId);
     Task<Role> GetById(int id);
     void Post(RolePostRequest model);
     Task Delete(int id);
@@ -29,7 +29,7 @@ public class RoleService : IRoleService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Role>> GetAllFactionForFactionnByID(int factionId)
+    public async Task<IEnumerable<Role>> GetAllRolesForFactionByID(int factionId)
     {
         return await _context.Roles.Where(
             r => !r.IsDeleted &&
