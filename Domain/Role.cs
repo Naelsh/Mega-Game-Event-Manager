@@ -9,8 +9,9 @@ namespace Domain;
 public class Role
 {
     public int Id { get; set; }
-    public string? Name { get; set; }
-    public string? Description { get; set; }
+    public string Name { get; set; } = "";
+    public string Description { get; set; } = "";
+    public bool IsDeleted { get; set; } = false;
 
     public Faction? Faction { get; set; }
     //public User User { get; set; }
