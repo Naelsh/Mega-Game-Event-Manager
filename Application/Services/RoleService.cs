@@ -50,7 +50,7 @@ public class RoleService : IRoleService
 
         role.Faction = faction;
 
-        _context.Roles.Add(role);
+        await _context.Roles.AddAsync(role);
         _context.SaveChanges();
     }
 
