@@ -1,28 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import Activity from './App/Features/Activities/Activity';
-import ActivityFormController from './App/Features/Activities/ActivityForm';
+import ActivityList from './App/Features/Activities/ActivityList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      activities: [],
+      DataIsLoaded: false
+    };
+  }
+
+  componentDidMount() {
+    fetch("https://localhost:7160/activity")
+    .then((result) => result.json())
+    .then((json) => {
+      this.setState({
+        activities: json,
+        DataIsLoaded: true
+      });
+    })
+  }
+
+  render() {
+
+    const {DataIsLoaded, activities} = this.state;
+    if (!DataIsLoaded) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <h1>Please wait activities are loading...</h1>
+          </header>
+        </div>
+      );
+    }
+
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1>Mega game event manager</h1>
+        </header>
+        <section>
+          <ActivityList activities={activities}/>
+        </section>
+      </div>
+    );
+  }
 }
 
 export default App;
