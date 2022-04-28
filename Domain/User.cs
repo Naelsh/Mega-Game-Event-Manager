@@ -13,6 +13,7 @@ public class User
     public string LastName { get; set; } = "";
     [Required]
     public string Username { get; set; } = "";
+    public bool IsDeleted { get; set; } = false;
 
     [JsonIgnore]
     public string PasswordHash { get; set; } = "";
