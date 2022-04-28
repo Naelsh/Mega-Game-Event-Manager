@@ -1,3 +1,4 @@
+using Application.Authentication;
 using Application.Helpers;
 using Application.Services;
 using Persistence;
@@ -14,9 +15,13 @@ services.AddControllers();
 services.AddAutoMapper(typeof(AutoMapperProfile));
 services.AddDbContext<DataContext>();
 
+services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+services.AddScoped<IJwtUtils, JwtUtils>();
 services.AddScoped<IActivityService, ActivityService>();
 services.AddScoped<IFactionService, FactionService>();
 services.AddScoped<IRoleService, RoleService>();
+
 
 var app = builder.Build();
 
@@ -31,6 +36,8 @@ app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
+app.UseMiddleware<JwtMiddleware>();
 
 //app.UseAuthorization();
 
