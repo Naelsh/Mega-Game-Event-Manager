@@ -14,7 +14,7 @@ public interface IJwtUtils
     public int? ValidateToken(string token);
 }
 
-public class JwtUtils
+public class JwtUtils : IJwtUtils
 {
     private readonly AppSettings _appSettings;
 
