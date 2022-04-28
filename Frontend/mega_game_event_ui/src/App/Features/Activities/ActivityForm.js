@@ -24,7 +24,7 @@ export function ActivityForm() {
           endDate: endDate
         })
       });
-      let resultJson = await result.json();
+      // let resultJson = await result.json();
       if (result.status === 200) {
         setName("");
         setDescription("");
@@ -84,7 +84,9 @@ export function ActivityForm() {
             onChange={(e) => setDescription(e.target.value)}
             maxLength={10000}
           />
+          <button type="submit">Create Activity</button>
       </form>
+      <span className="message">{message ? <p>{message}</p> : null}</span>
     </div>
   );
 }

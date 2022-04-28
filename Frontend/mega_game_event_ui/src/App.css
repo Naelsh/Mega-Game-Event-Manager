@@ -13,6 +13,13 @@
   color: white;
 }
 
+main {
+  display: flex;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 ul {
   list-style: none;
   margin: 0;

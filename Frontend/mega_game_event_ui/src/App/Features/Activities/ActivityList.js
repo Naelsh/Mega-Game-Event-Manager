@@ -1,5 +1,6 @@
 import React from "react";
 import Activity from "./Activity";
+import './ActivityList.css';
 
 export default function ActivityList(props) {
   const activities = props.activities;
@@ -8,7 +9,7 @@ export default function ActivityList(props) {
       <Activity activity = {activity}></Activity>
     </ul>
   ));
-  
+
   return(
     activityItems
   );

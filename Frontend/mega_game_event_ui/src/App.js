@@ -41,12 +41,14 @@ class App extends React.Component {
         <header className="App-header">
           <h1>Mega game event manager</h1>
         </header>
-        <section>
-          <ActivityList activities={activities}/>
-        </section>
-        <section>
-          <ActivityForm/>
-        </section>
+        <main>
+          <section className='list'>
+            <ActivityList activities={activities}/>
+          </section>
+          <section className='form'>
+            <ActivityForm/>
+          </section>
+        </main>
         <footer>
           <p>Designed by: <a href="https://github.com/Naelsh" target={'_blank'} rel="noreferrer">Niklas Lindblad</a></p>
         </footer>
