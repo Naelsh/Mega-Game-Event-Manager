@@ -17,4 +17,5 @@ public class Activity
     public bool IsDeleted { get; set; } = false;
 
     public List<Faction> Factions { get; set; } = new List<Faction>();
+    public List<User> Participants { get; set; } = new List<User>();
 }
