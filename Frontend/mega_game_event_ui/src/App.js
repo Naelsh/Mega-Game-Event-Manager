@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 import ActivityList from './App/Features/Activities/ActivityList';
 
 class App extends React.Component {
@@ -22,6 +23,26 @@ class App extends React.Component {
     })
   }
 
+  async addActivity() {
+    const inputActivity = {
+      "name": "new activity",
+      "description": "with a new activity",
+      "startDate": "2022-04-23T18:25:43.511Z",
+      "endDate" : "2022-04-25T18:25:43.511Z",
+      "location": "random place"
+    };
+    const response = await fetch("https://localhost:7160/activity",
+      {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(inputActivity)
+      }
+    );
+    return response.json();
+
+  }
+
   render() {
 
     const {DataIsLoaded, activities} = this.state;
@@ -42,6 +63,9 @@ class App extends React.Component {
         </header>
         <section>
           <ActivityList activities={activities}/>
+        </section>
+        <section>
+          <Button onClick={this.addActivity}>Create new activity</Button>
         </section>
       </div>
     );
