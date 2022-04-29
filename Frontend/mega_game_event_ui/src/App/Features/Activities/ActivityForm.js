@@ -41,7 +41,7 @@ export function ActivityForm() {
   };
 
   return (
-    <div class="form-box">
+    <div className="form-box">
       <h5>Create new activity</h5>
       <form onSubmit={handleSubmit}>
           <input 
