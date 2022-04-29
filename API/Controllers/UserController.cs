@@ -1,8 +1,8 @@
-﻿using Application.Helpers;
+﻿using Application.Authentication;
+using Application.Helpers;
 using Application.Models.User;
 using Application.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
