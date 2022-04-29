@@ -1,4 +1,5 @@
-﻿using Application.Models.Activity;
+﻿using Application.Authentication;
+using Application.Models.Activity;
 using Application.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;

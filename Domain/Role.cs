@@ -14,5 +14,5 @@ public class Role
     public bool IsDeleted { get; set; } = false;
 
     public Faction? Faction { get; set; }
-    //public User User { get; set; }
+    public List<User> Users { get; set; } = new List<User>();
 }
