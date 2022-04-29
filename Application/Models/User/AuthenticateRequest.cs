@@ -4,6 +4,7 @@ namespace Application.Models.User;
 
 public class AuthenticateRequest
 {
+    [EmailAddress]
     [Required]
     public string Username { get; set; } = "";
 

@@ -10,6 +10,7 @@ public class RegisterRequest
     [Required]
     public string LastName { get; set; } = "";
 
+    [EmailAddress]
     [Required]
     public string Username { get; set; } = "";
 
