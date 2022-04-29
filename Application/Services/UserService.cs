@@ -95,7 +95,11 @@ public class UserService : IUserService
     public void Delete(int id)
     {
         var user = getUser(id);
-        _context.Users.Remove(user);
+        user.IsDeleted = true;
+        user.FirstName = "Anonymized " + DateTime.UtcNow.ToString();
+        user.LastName = "Anonymized " + DateTime.UtcNow.ToString();
+        user.Username = "Anonymized " + DateTime.UtcNow.ToString();
+        _context.Users.Update(user);
         _context.SaveChanges();
     }
 
