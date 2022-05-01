@@ -5,6 +5,8 @@ import App from './App';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ActivityList from './App/Features/Activities/ActivityList';
 import { ActivityForm } from './App/Features/Activities/ActivityForm';
+import { Login } from './App/Features/Login/Login';
+import Home from './App/Features/Home/Home';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -12,7 +14,10 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path='activities' element={<ActivityList />} />
+      <Route path='/login' element={<Login />} />
+      {/* Change the next to private route when it is implemented */}
+      <Route path='/home' element={<Home />} />
+      <Route path='activities' element={<ActivityList />} /> 
       <Route path='new-activity' element={<ActivityForm />} />
     </Routes>
   </BrowserRouter>
