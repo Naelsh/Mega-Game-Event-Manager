@@ -9,6 +9,7 @@ export default function App () {
       <nav style={{borderBottom: "solid 1px", paddingBottom: "1rem"}}>
         <Link to="/activities">Activities</Link> |{" "}
         <Link to="/new-activity">New Activity</Link>
+        <Link to="/login">Login</Link>
       </nav>
     </div>
   );
