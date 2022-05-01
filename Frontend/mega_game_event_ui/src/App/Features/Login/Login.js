@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../Styling/Form.css';
 
 export function Login () {
   const[username, setUserName] = useState("");
@@ -34,7 +35,7 @@ export function Login () {
   }
 
   return (
-    <div className="login-box">
+    <div className="form-box">
       <h5>Login</h5>
       <form onSubmit={handleSubmit}>
         <input

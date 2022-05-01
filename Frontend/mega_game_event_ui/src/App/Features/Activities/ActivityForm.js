@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './ActivityForm.css';
+import '../Styling/Form.css';
 
 export function ActivityForm() {
   const[name, setName] = useState("");

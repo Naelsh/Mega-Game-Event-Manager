@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../Styling/Form.css';
 
 export default function CreateAccountForm() {
   const [firstName, setFirstName] = useState("");
@@ -41,7 +42,7 @@ export default function CreateAccountForm() {
   }
 
   return (
-    <div className="registration-box">
+    <div className="form-box">
       <h5>Register new account</h5>
       <form onSubmit={handleSubmit}>
         <input
