@@ -29,6 +29,10 @@ export function Login () {
     }
   }
 
+  let goToAccountCreation = () => {
+    navigate('/new-user', {replace:true});
+  }
+
   return (
     <div className="login-box">
       <h5>Login</h5>
@@ -40,15 +44,17 @@ export function Login () {
           placeholder="user@domain.com"
           onChange={(e) => setUserName(e.target.value)}
           required
-        />
+          />
         <input
           id="password"
           type="password"
           value={password}
+          placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <button type="submit">Login</button>
+        <button onClick={goToAccountCreation}>Register account</button>
       </form>
     </div>
   )
