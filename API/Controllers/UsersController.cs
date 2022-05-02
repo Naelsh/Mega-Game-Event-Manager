@@ -8,13 +8,13 @@ using Microsoft.Extensions.Options;
 
 namespace API.Controllers;
 
-public class UserController : BaseController
+public class UsersController : BaseController
 {
     private IUserService _userService;
     private IMapper _mapper;
     private readonly AppSettings _appSettings;
 
-    public UserController(
+    public UsersController(
         IUserService userService,
         IMapper mapper,
         IOptions<AppSettings> appSettings)
