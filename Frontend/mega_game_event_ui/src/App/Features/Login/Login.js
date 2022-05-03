@@ -10,7 +10,7 @@ export default function Login () {
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let result = await fetch("https://localhost:7160/user/authenticate", {
+      let result = await fetch("https://localhost:7160/users/authenticate", {
         headers: {'Content-Type': 'application/json'},
         method: 'POST',
         mode: 'cors',
@@ -23,7 +23,7 @@ export default function Login () {
       if ((await result).status === 200) {
         let token = await result.json().then(x => x.token);
         localStorage.token = token;
-        navigate('/home', {replace: true});
+        navigate('/activities', {replace: true});
       }
     } catch (error) {
       console.log(error);

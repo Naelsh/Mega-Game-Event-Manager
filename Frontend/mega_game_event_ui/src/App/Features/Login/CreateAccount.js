@@ -12,7 +12,7 @@ export default function CreateAccountForm() {
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let result = await fetch("https://localhost:7160/user/register", {
+      let result = await fetch("https://localhost:7160/users/register", {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
         mode: 'cors',

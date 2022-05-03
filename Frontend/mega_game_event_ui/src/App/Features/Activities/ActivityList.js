@@ -13,7 +13,7 @@ export default function ActivityLister() {
 
   let loadActivities = async () => {
     try {
-      let result = fetch("https://localhost:7160/activity", {
+      let result = fetch("https://localhost:7160/activities", {
         headers: {'Authorization': localStorage.getItem("token")}
       });
 

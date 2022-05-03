@@ -12,7 +12,7 @@ export default function ActivityForm() {
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let result = await fetch("https://localhost:7160/activity", {
+      let result = await fetch("https://localhost:7160/activities", {
         headers:
         {
           'Content-Type': 'application/json',
