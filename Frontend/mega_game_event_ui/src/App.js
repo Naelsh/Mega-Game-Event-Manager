@@ -1,16 +1,24 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './App/Features/Home/Home';
+import CreateAccountForm from './App/Features/Login/CreateAccount';
+import Login from './App/Features/Login/Login';
+import ActivityList from './App/Features/Activities/ActivityList';
+import ActivityForm from './App/Features/Activities/ActivityForm';
 
-export default function App () {
+export default function App() {
   return (
-    <div>
-      <h1>Bookkeeper!</h1>
-      <nav style={{borderBottom: "solid 1px", paddingBottom: "1rem"}}>
-        <Link to="/activities">Activities</Link> |{" "}
-        <Link to="/new-activity">New Activity</Link>
-        <Link to="/login">Login</Link>
-      </nav>
-    </div>
+
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/new-user' element={<CreateAccountForm />} />
+        {/* Change the next to private route when it is implemented */}
+        <Route path='/activities' element={<ActivityList />} />
+        <Route path='/new-activity' element={<ActivityForm />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
