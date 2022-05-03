@@ -3,7 +3,7 @@ import './Activity.css';
 
 function Activity (props) {
   return (
-    <li>
+    <li className='activity'>
       <h3>{props.activity.name}</h3>
       <p><strong>Starts:</strong> {props.activity.startDate}</p>
       <p><strong>Ends:</strong> {props.activity.endDate}</p>
