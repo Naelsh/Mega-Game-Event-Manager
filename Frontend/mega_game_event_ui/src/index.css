@@ -1,4 +1,5 @@
 body {
+  background-color: #eaeaea !important;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +11,28 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.navbar {
+  background-image: linear-gradient(135deg, rgb(10, 111, 10) 0%, rgb(19, 177, 19) 69%, rgb(10, 210, 10) 89%) !important;
+}
+
+.navbar ul {
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.navbar li {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 4px;
+  display: inline;
+  background-color: #eaeaea3a;
+  text-decoration: #eaeaea;
+}
+
+.navbar li :hover {
+  background-color: #eaeaea;
 }

@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class RoleController : BaseController
+public class RolesController : BaseController
 {
     private readonly IRoleService _service;
     private readonly IMapper _mapper;
 
-    public RoleController(
+    public RolesController(
         IRoleService service,
         IMapper mapper
         )
@@ -26,12 +26,12 @@ public class RoleController : BaseController
         return Ok(role);
     }
 
-    [HttpGet("getAll/{factionId}")]
-    public async Task<IActionResult> GetAllForActivity(int factionID)
-    {
-        var factions = await _service.GetAllRolesForFactionByID(factionID);
-        return Ok(factions);
-    }
+    //[HttpGet("getAll/{factionId}")]
+    //public async Task<IActionResult> GetAllForActivity(int factionID)
+    //{
+    //    var factions = await _service.GetAllRolesForFactionByID(factionID);
+    //    return Ok(factions);
+    //}
 
     [HttpPost]
     public IActionResult Post(RolePostRequest model)

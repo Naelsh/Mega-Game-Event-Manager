@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class FactionController : BaseController
+public class FactionsController : BaseController
 {
     private readonly IFactionService _service;
     private readonly IMapper _mapper;
 
-    public FactionController(
+    public FactionsController(
         IFactionService service,
         IMapper mapper
         )
@@ -26,12 +26,12 @@ public class FactionController : BaseController
         return Ok(faction);
     }
 
-    [HttpGet("getAll/{activityId}")]
-    public async Task<IActionResult> GetAllForActivity(int activityId)
-    {
-        var factions = await _service.GetAllFactionForEventByID(activityId);
-        return Ok(factions);
-    }
+    //[HttpGet("getAll/{activityId}")]
+    //public async Task<IActionResult> GetAllForActivity(int activityId)
+    //{
+    //    var factions = await _service.GetAllFactionForEventByID(activityId);
+    //    return Ok(factions);
+    //}
 
     [HttpPost]
     public IActionResult Post(FactionPostRequest model)

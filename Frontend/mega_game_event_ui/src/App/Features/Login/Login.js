@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import '../Styling/Form.css';
 
-export function Login () {
+export default function Login () {
   const[username, setUserName] = useState("");
   const[password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export function Login () {
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let result = await fetch("https://localhost:7160/user/authenticate", {
+      let result = await fetch("https://localhost:7160/users/authenticate", {
         headers: {'Content-Type': 'application/json'},
         method: 'POST',
         mode: 'cors',
@@ -20,18 +20,14 @@ export function Login () {
         })
       });
 
-      if (result.status === 200) {
+      if ((await result).status === 200) {
         let token = await result.json().then(x => x.token);
         localStorage.token = token;
-        navigate('/home', {replace: true});
+        navigate('/activities', {replace: true});
       }
     } catch (error) {
       console.log(error);
     }
-  }
-
-  let goToAccountCreation = () => {
-    navigate('/new-user', {replace:true});
   }
 
   return (
@@ -55,7 +51,7 @@ export function Login () {
           required
         />
         <button type="submit">Login</button>
-        <button onClick={goToAccountCreation}>Register account</button>
+        <NavLink to='/new-user'>Create new account</NavLink>
       </form>
     </div>
   )

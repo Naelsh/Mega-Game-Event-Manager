@@ -1,0 +1,14 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home h1 {
+  text-align: center;
+}
+
+.home li {
+  text-align: center;
+  margin: 10px;
+}

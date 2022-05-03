@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class ActivityController : BaseController
+public class ActivitiesController : BaseController
 {
     private readonly IActivityService _service;
     private readonly IMapper _mapper;
 
-    public ActivityController(
+    public ActivitiesController(
         IActivityService service,
         IMapper mapper
         )

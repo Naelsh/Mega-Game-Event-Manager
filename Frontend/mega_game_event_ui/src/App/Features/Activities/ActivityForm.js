@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../Styling/Form.css';
 
-export function ActivityForm() {
+export default function ActivityForm() {
   const[name, setName] = useState("");
   const[description, setDescription] = useState("");
   const[location, setLocation] = useState("");
@@ -12,8 +12,12 @@ export function ActivityForm() {
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let result = await fetch("https://localhost:7160/activity", {
-        headers: { 'Content-Type': 'application/json' },
+      let result = await fetch("https://localhost:7160/activities", {
+        headers:
+        {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.token
+        },
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify({
