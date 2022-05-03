@@ -6,11 +6,13 @@ import CreateAccountForm from './App/Features/Login/CreateAccount';
 import Login from './App/Features/Login/Login';
 import ActivityList from './App/Features/Activities/ActivityList';
 import ActivityForm from './App/Features/Activities/ActivityForm';
+import NavBar from './App/Features/Layout/NavBar';
 
 export default function App() {
   return (
 
     <BrowserRouter>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/login' element={<Login />} />
