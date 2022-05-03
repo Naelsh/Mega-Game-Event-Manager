@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import '../Styling/Form.css';
 
 export default function CreateAccountForm() {
@@ -8,7 +8,6 @@ export default function CreateAccountForm() {
   const [password, setPassword] = useState("");
   const [username, setUserName] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
 
   let handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,10 +34,6 @@ export default function CreateAccountForm() {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  let goToLogin = () => {
-    navigate('/login', {replace: true});
   }
 
   return (
@@ -82,7 +77,7 @@ export default function CreateAccountForm() {
           maxLength={255}
         />
         <button type="submit">Create Account</button>
-        <button onClick={goToLogin}>Go to login</button>
+        <NavLink to='/login'>Go to Login screen</NavLink>
       </form>
       <span className="message">{message ? <p>{message}</p> : null}</span>
     </div>
