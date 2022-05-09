@@ -7,6 +7,7 @@ import Login from './App/Features/Login/Login';
 import ActivityList from './App/Features/Activities/ActivityList';
 import ActivityForm from './App/Features/Activities/ActivityForm';
 import NavBar from './App/Features/Layout/NavBar';
+import ActivityDetails from './App/Features/Activities/ActivityDetails';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         {/* Change the next to private route when it is implemented */}
         <Route path='/activities' element={<ActivityList />} />
         <Route path='/new-activity' element={<ActivityForm />} />
+        <Route path='/activitydetails/:id' element={<ActivityDetails />} />
       </Routes>
     </BrowserRouter>
   );
