@@ -2,6 +2,8 @@
 
 using Application.Helpers;
 using Application.Models.Activity;
+using Application.Models.Faction;
+using Application.Models.Role;
 using AutoMapper;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,9 @@ using System.Threading.Tasks;
 public interface IActivityService
 {
     Task<IEnumerable<Activity>> GetAll();
+    Task<IEnumerable<Faction>> GetFactionsForActivity(int id);
+    Task<IEnumerable<Role>> GetRolesForActivity(int id);
+    Task<DetailedActivity>? GetDetailedById(int id);
     Task<Activity> GetById(int id);
     void Post(ActivityPostRequest model);
     Task Delete(int id);
@@ -39,6 +44,50 @@ public class ActivityService : IActivityService
     {
         Activity activity = await GetActivityById(id);
         return activity;
+    }
+
+    public async Task<DetailedActivity>? GetDetailedById(int id)
+    {
+        DetailedActivity? detailedActivity = await (from activity in _context.Activities
+                                where activity.Id == id
+                              select new DetailedActivity()
+                              {
+                                  Name = activity.Name,
+                                  Description = activity.Description,
+                                  StartDate = activity.StartDate,
+                                  EndDate = activity.EndDate,
+                                  Location = activity.Location,
+                                  Factions = (from faction in activity.Factions
+                                              select new DetailedFaction()
+                                              {
+                                                  Id = faction.Id,
+                                                  Name = faction.Name,
+                                                  Description = faction.Description,
+                                                  ActivityId = id,
+                                                  Roles = (from role in faction.Roles
+                                                           select new DetailedRole()
+                                                           {
+                                                               Id = role.Id,
+                                                               Name = role.Name,
+                                                               Description = role.Description,
+                                                               FactionId = faction.Id,
+                                                               Users = role.Users
+                                                           }).ToList() 
+                                              }).ToList()
+                                }).FirstOrDefaultAsync();
+        return detailedActivity;
+    }
+
+    public async Task<IEnumerable<Faction>> GetFactionsForActivity(int id)
+    {
+        var activity = await GetActivityById(id);
+        return activity.Factions.ToList();
+    }
+
+    public async Task<IEnumerable<Role>> GetRolesForActivity(int id)
+    {
+        var roles = await _context.Roles.Where(r => r.Faction.Activity.Id == id).ToListAsync();
+        return roles;
     }
 
     public void Post(ActivityPostRequest model)

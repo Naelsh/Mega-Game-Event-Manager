@@ -34,6 +34,27 @@ public class ActivitiesController : BaseController
         return Ok(activities);
     }
 
+    [HttpGet("{id}/details")]
+    public async Task<IActionResult> GetDetailed(int id)
+    {
+        var detailedActivity = await _service.GetDetailedById(id);
+        return Ok(detailedActivity);
+    }
+
+    [HttpGet("{id}/factions")]
+    public async Task<IActionResult> GetFactions(int id)
+    {
+        var factions = await _service.GetFactionsForActivity(id);
+        return Ok(factions);
+    }
+
+    [HttpGet("{id}/roles")]
+    public async Task<IActionResult> GetRoles(int id)
+    {
+        var roles = await _service.GetRolesForActivity(id);
+        return Ok(roles);
+    }
+
     [HttpPost]
     public IActionResult Post(ActivityPostRequest model)
     {
