@@ -86,12 +86,6 @@ public class ActivityService : IActivityService
         return detailedActivity;
     }
 
-    public async Task<IEnumerable<Role>> GetRolesForActivity(int id)
-    {
-        var roles = await _context.Roles.Where(r => r.Faction.Activity.Id == id).ToListAsync();
-        return roles;
-    }
-
     public void AddUserToActivity(int id, AddUserToActivityRequest model)
     {
         var user = _context.Users.Include(u => u.Activities).FirstOrDefault(x => x.Username == model.UserName);

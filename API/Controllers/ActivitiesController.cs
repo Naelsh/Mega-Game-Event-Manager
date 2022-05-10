@@ -81,13 +81,6 @@ public class ActivitiesController : BaseController
         return Ok(detailedActivity);
     }
 
-    [HttpGet("{id}/roles")]
-    public async Task<IActionResult> GetRoles(int id)
-    {
-        var roles = await _service.GetRolesForActivity(id);
-        return Ok(roles);
-    }
-
     [HttpPost]
     public IActionResult Post(ActivityPostRequest model)
     {
