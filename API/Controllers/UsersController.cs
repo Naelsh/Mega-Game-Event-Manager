@@ -88,7 +88,18 @@ public class UsersController : BaseController
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
     {
-        _userService.Register(model);
+        try
+        {
+            _userService.Register(model);
+        }
+        catch (AppException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (Exception ex)
+        {
+            BadRequest(ex.Message);
+        }
         return Ok(new { message = "Registration successful" });
     }
 
