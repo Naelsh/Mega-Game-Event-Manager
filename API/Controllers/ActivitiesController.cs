@@ -102,10 +102,16 @@ public class ActivitiesController : BaseController
     [HttpPost]
     public IActionResult Post(ActivityPostRequest model)
     {
-        _service.Post(model);
+        try
+        {
+            _service.Post(model);
+        }
+        catch (AppException e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(new { message = "Activity created successfully" });
     }
-
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, ActivityUpdateRequest model)
