@@ -81,6 +81,24 @@ public class ActivitiesController : BaseController
         return Ok(detailedActivity);
     }
 
+    [HttpPost("{id}/add-user")]
+    public IActionResult AddUser(int id, AddUserToActivityRequest model)
+    {
+        try
+        {
+            _service.AddUserToActivity(id, model);
+        }
+        catch (AppException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok(new { messsage = "User added successfully" });
+    }
+
     [HttpPost]
     public IActionResult Post(ActivityPostRequest model)
     {
@@ -88,12 +106,6 @@ public class ActivitiesController : BaseController
         return Ok(new { message = "Activity created successfully" });
     }
 
-    [HttpPost("{id}/add-user")]
-    public IActionResult AddUser(int id, AddUserToActivityRequest model)
-    {
-        _service.AddUserToActivity(id, model);
-        return Ok(new { messsage = "User added successfully" });
-    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, ActivityUpdateRequest model)
