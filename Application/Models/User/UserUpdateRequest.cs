@@ -12,4 +12,6 @@ public class UserUpdateRequest
     public string Username { get; set; } = "";
     [StringLength(255, MinimumLength = 6)]
     public string Password { get; set; } = "";
+    public int ActivityId { get; set; }
+    public int RoleId { get; set; }
 }

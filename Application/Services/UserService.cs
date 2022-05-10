@@ -20,16 +20,13 @@ public interface IUserService
 public class UserService : IUserService
 {
     private DataContext _context;
-    private IJwtUtils _jwtUtils;
     private readonly IMapper _mapper;
 
     public UserService(
         DataContext context,
-        IJwtUtils jwtUtils,
         IMapper mapper)
     {
         _context = context;
-        _jwtUtils = jwtUtils;
         _mapper = mapper;
     }
 
@@ -43,7 +40,6 @@ public class UserService : IUserService
 
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);
-        response.Token = _jwtUtils.GenerateToken(user);
         return response;
     }
 
@@ -85,6 +81,16 @@ public class UserService : IUserService
         // hash password if it was entered
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+        if (model.ActivityId > 0)
+        {
+            user.Activities.Add(_context.Activities.Find(model.ActivityId));
+        }
+
+        if (model.RoleId > 0)
+        {
+            user.Roles.Add(_context.Roles.Find(model.RoleId));
+        }
 
         // copy model to user and save
         _mapper.Map(model, user);

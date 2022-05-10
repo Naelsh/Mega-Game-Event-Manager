@@ -9,9 +9,9 @@ export default function ActivityLister() {
 
   useEffect(() => {
     loadActivities();
-  })
+  }, [])
 
-  let loadActivities = async () => {
+  const loadActivities = async () => {
     try {
       let result = fetch("https://localhost:7160/activities", {
         headers: {'Authorization': localStorage.getItem("token")}
