@@ -120,7 +120,26 @@ public class ActivitiesController : BaseController
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, ActivityUpdateRequest model)
     {
-        await _service.Update(id, model);
+        try
+        {
+            await _service.Update(id, model);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(new { message = "Activity updated successfully" });
     }
 

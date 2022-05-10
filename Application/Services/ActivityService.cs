@@ -112,6 +112,18 @@ public class ActivityService : IActivityService
         _context.SaveChanges();
     }
 
+    public async Task Update(int id, ActivityUpdateRequest model)
+    {
+        var activity = await GetActivityById(id);
+
+        if (DateTime.Compare(model.StartDate, model.EndDate) > 0)
+            throw new ArgumentException("Event '" + model.Name + "' start date after end date");
+
+        _mapper.Map(model, activity);
+        _context.Activities.Update(activity);
+        _context.SaveChanges();
+    }
+
     public async Task Delete(int id)
     {
         var activity = await GetActivityById(id);
@@ -120,17 +132,6 @@ public class ActivityService : IActivityService
         _context.SaveChanges();
     }
 
-    public async Task Update(int id, ActivityUpdateRequest model)
-    {
-        var activity = await GetActivityById(id);
-
-        if (DateTime.Compare(model.StartDate, model.EndDate) > 0)
-            throw new AppException("Event '" + model.Name + "' start date after end date");
-
-        _mapper.Map(model, activity);
-        _context.Activities.Update(activity);
-        _context.SaveChanges();
-    }
 
     private async Task<Activity> GetActivityById(int id)
     {
