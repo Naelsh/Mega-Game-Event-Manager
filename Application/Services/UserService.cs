@@ -45,6 +45,11 @@ public class UserService : IUserService
 
     public IEnumerable<User> GetAll()
     {
+        var result = _context.Users;
+        if (result == null)
+        {
+            throw new NullReferenceException("No users found");
+        }
         return _context.Users;
     }
 

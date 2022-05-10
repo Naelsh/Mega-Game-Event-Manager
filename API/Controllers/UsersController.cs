@@ -3,6 +3,7 @@ using Application.Helpers;
 using Application.Models.User;
 using Application.Services;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -44,6 +45,25 @@ public class UsersController : BaseController
         return Ok(response);
     }
 
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        IEnumerable<User> users = null;
+        try
+        {
+            users = _userService.GetAll();
+        }
+        catch (NullReferenceException nre)
+        {
+            NotFound(nre.Message);
+        }
+        catch (Exception ex)
+        {
+            BadRequest(ex.Message);
+        }
+        return Ok(users);
+    }
+
     [AllowAnonymous]
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
@@ -52,12 +72,6 @@ public class UsersController : BaseController
         return Ok(new { message = "Registration successful" });
     }
 
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var users = _userService.GetAll();
-        return Ok(users);
-    }
 
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
