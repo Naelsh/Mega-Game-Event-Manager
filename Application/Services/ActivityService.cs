@@ -38,7 +38,10 @@ public class ActivityService : IActivityService
 
     public async Task<IEnumerable<Activity>> GetAll()
     {
-        return await _context.Activities.Where(ac => ac.IsDeleted != true).ToListAsync();
+        var result = await _context.Activities.Where(ac => ac.IsDeleted != true).ToListAsync();
+        if (result == null || result.Count == 0)
+            throw new AppException("No activities found");
+        return result;
     }
 
     public async Task<Activity> GetById(int id)

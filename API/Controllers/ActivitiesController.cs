@@ -22,6 +22,21 @@ public class ActivitiesController : BaseController
         _mapper = mapper;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        IEnumerable<Activity> activities;
+        try
+        {
+            activities = await _service.GetAll();
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        return Ok(activities);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -41,12 +56,6 @@ public class ActivitiesController : BaseController
         return Ok(activity);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var activities = await _service.GetAll();
-        return Ok(activities);
-    }
 
     [HttpGet("{id}/details")]
     public async Task<IActionResult> GetDetailed(int id)
