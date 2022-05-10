@@ -34,6 +34,10 @@ public class ActivitiesController : BaseController
         {
             return NotFound(ae.Message);
         }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(activities);
     }
 
