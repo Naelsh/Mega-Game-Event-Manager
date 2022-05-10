@@ -49,9 +49,13 @@ public class ActivitiesController : BaseController
         {
             activity = await _service.GetById(id);
         }
-        catch (AppException e)
+        catch (KeyNotFoundException e)
         {
             return NotFound(e.Message);
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
         }
         catch (Exception e)
         {

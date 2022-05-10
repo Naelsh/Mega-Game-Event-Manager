@@ -47,8 +47,6 @@ public class ActivityService : IActivityService
     public async Task<Activity> GetById(int id)
     {
         Activity activity = await GetActivityById(id);
-        if (activity == null)
-            throw new AppException("Activity not found");
         return activity;
     }
 
