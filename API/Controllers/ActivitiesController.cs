@@ -146,7 +146,22 @@ public class ActivitiesController : BaseController
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _service.Delete(id);
+        try
+        {
+            await _service.Delete(id);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(new { message = "Activity deleted succesfully" });
     }
 }
