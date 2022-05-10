@@ -28,7 +28,19 @@ public class UsersController : BaseController
     [HttpPost("authenticate")]
     public IActionResult Authenticate(AuthenticateRequest model)
     {
-        var response = _userService.Authenticate(model);
+        AuthenticateResponse response = null;
+        try
+        {
+            response = _userService.Authenticate(model);
+        }
+        catch (ArgumentException ae)
+        {
+            BadRequest(ae.Message);
+        }
+        catch (Exception ex)
+        {
+            BadRequest(ex.Message);
+        }
         return Ok(response);
     }
 
