@@ -20,16 +20,13 @@ public interface IUserService
 public class UserService : IUserService
 {
     private DataContext _context;
-    private IJwtUtils _jwtUtils;
     private readonly IMapper _mapper;
 
     public UserService(
         DataContext context,
-        IJwtUtils jwtUtils,
         IMapper mapper)
     {
         _context = context;
-        _jwtUtils = jwtUtils;
         _mapper = mapper;
     }
 
@@ -43,7 +40,6 @@ public class UserService : IUserService
 
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);
-        response.Token = _jwtUtils.GenerateToken(user);
         return response;
     }
 

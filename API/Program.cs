@@ -12,7 +12,7 @@ var services = builder.Services;
 services.AddCors();
 services.AddControllers();
 
-services.AddAuthentication("Bearar").AddIdentityServerAuthentication("Bearar", opt => {
+services.AddAuthentication("Bearer").AddIdentityServerAuthentication("Bearer", opt => {
     opt.ApiName = "MegagameAPI"; // name of client
     opt.Authority = "https://localhost:7215"; // name of auth server
 });
@@ -23,7 +23,6 @@ services.AddAutoMapper(typeof(AutoMapperProfile));
 
 services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
-services.AddScoped<IJwtUtils, JwtUtils>();
 services.AddScoped<IUserService, UserService>();
 services.AddScoped<IActivityService, ActivityService>();
 services.AddScoped<IFactionService, FactionService>();
@@ -46,10 +45,10 @@ app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-app.UseMiddleware<JwtMiddleware>();
+app.UseExceptionHandler("/error");
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
