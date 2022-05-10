@@ -81,13 +81,6 @@ public class ActivitiesController : BaseController
         return Ok(detailedActivity);
     }
 
-    [HttpGet("{id}/factions")]
-    public async Task<IActionResult> GetFactions(int id)
-    {
-        var factions = await _service.GetFactionsForActivity(id);
-        return Ok(factions);
-    }
-
     [HttpGet("{id}/roles")]
     public async Task<IActionResult> GetRoles(int id)
     {

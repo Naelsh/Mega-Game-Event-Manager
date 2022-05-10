@@ -86,12 +86,6 @@ public class ActivityService : IActivityService
         return detailedActivity;
     }
 
-    public async Task<IEnumerable<Faction>> GetFactionsForActivity(int id)
-    {
-        var activity = await GetActivityById(id);
-        return activity.Factions.ToList();
-    }
-
     public async Task<IEnumerable<Role>> GetRolesForActivity(int id)
     {
         var roles = await _context.Roles.Where(r => r.Faction.Activity.Id == id).ToListAsync();
