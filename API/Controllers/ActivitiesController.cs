@@ -69,7 +69,7 @@ public class ActivitiesController : BaseController
         {
             detailedActivity = await _service.GetDetailedById(id);
         }
-        catch (AppException e)
+        catch (NullReferenceException e)
         {
             return NotFound(e.Message);
         }
@@ -77,8 +77,7 @@ public class ActivitiesController : BaseController
         {
             return BadRequest(e.Message);
         }
-        if (detailedActivity == null)
-            return NotFound("Activity not found");
+
         return Ok(detailedActivity);
     }
 

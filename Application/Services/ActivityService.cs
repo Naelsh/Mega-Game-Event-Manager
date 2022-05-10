@@ -17,7 +17,7 @@ public interface IActivityService
     Task<IEnumerable<Activity>> GetAll();
     Task<IEnumerable<Faction>> GetFactionsForActivity(int id);
     Task<IEnumerable<Role>> GetRolesForActivity(int id);
-    Task<DetailedActivity>? GetDetailedById(int id);
+    Task<DetailedActivity> GetDetailedById(int id);
     Task<Activity> GetById(int id);
     void AddUserToActivity(int id, AddUserToActivityRequest userName);
     void Post(ActivityPostRequest model);
@@ -52,7 +52,7 @@ public class ActivityService : IActivityService
         return activity;
     }
 
-    public async Task<DetailedActivity>? GetDetailedById(int id)
+    public async Task<DetailedActivity> GetDetailedById(int id)
     {
         DetailedActivity? detailedActivity = await (from activity in _context.Activities
                                 where activity.Id == id
@@ -81,6 +81,8 @@ public class ActivityService : IActivityService
                                                            }).ToList() 
                                               }).ToList()
                                 }).FirstOrDefaultAsync();
+        if (detailedActivity == null)
+            throw new NullReferenceException("Detailed activity not found");
         return detailedActivity;
     }
 
