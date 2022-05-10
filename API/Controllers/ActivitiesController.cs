@@ -64,7 +64,21 @@ public class ActivitiesController : BaseController
     [HttpGet("{id}/details")]
     public async Task<IActionResult> GetDetailed(int id)
     {
-        var detailedActivity = await _service.GetDetailedById(id);
+        DetailedActivity detailedActivity;
+        try
+        {
+            detailedActivity = await _service.GetDetailedById(id);
+        }
+        catch (AppException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        if (detailedActivity == null)
+            return NotFound("Activity not found");
         return Ok(detailedActivity);
     }
 
