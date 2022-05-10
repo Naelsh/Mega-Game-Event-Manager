@@ -64,6 +64,26 @@ public class UsersController : BaseController
         return Ok(users);
     }
 
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        User user = null;
+        try
+        {
+            user = _userService.GetById(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            BadRequest(ex.Message);
+        }
+
+        return Ok(user);
+    }
+
     [AllowAnonymous]
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
@@ -73,12 +93,6 @@ public class UsersController : BaseController
     }
 
 
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var user = _userService.GetById(id);
-        return Ok(user);
-    }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, UserUpdateRequest model)
