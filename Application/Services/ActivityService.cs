@@ -44,6 +44,8 @@ public class ActivityService : IActivityService
     public async Task<Activity> GetById(int id)
     {
         Activity activity = await GetActivityById(id);
+        if (activity == null)
+            throw new AppException("Activity not found");
         return activity;
     }
 
@@ -95,10 +97,10 @@ public class ActivityService : IActivityService
     {
         var user = _context.Users.Include(u => u.Activities).FirstOrDefault(x => x.Username == model.UserName);
         if (user == null)
-            throw new AppException("User could not be found");
+            throw new AppException("User not found");
         var activity = _context.Activities.Find(id);
         if (activity == null)
-            throw new AppException("Activity could not be found");
+            throw new AppException("Activity not found");
 
         if (user.Activities.Contains(activity))
             throw new AppException("User already added to activity");

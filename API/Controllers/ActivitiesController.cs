@@ -1,7 +1,9 @@
 ﻿using Application.Authentication;
+using Application.Helpers;
 using Application.Models.Activity;
 using Application.Services;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -23,7 +25,19 @@ public class ActivitiesController : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var activity = await _service.GetById(id);
+        Activity activity;
+        try
+        {
+            activity = await _service.GetById(id);
+        }
+        catch (AppException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(activity);
     }
 
