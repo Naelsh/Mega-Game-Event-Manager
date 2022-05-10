@@ -12,6 +12,11 @@ var services = builder.Services;
 services.AddCors();
 services.AddControllers();
 
+services.AddAuthentication("Bearar").AddIdentityServerAuthentication("Bearar", opt => {
+    opt.ApiName = "MegagameAPI"; // name of client
+    opt.Authority = "https://localhost:7215"; // name of auth server
+});
+
 services.AddDbContext<DataContext>();
 
 services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -43,7 +48,8 @@ app.UseCors(x => x
 
 app.UseMiddleware<JwtMiddleware>();
 
-//app.UseAuthorization();
+app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

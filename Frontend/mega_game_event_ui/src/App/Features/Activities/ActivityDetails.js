@@ -11,8 +11,9 @@ export default function ActivityDetails() {
   const [location, setLocation] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [activityMessage, setActivityMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [factions, setFactions] = useState([]);
+  const [userName, setUserName] = useState("");
 
   
 
@@ -50,7 +51,7 @@ export default function ActivityDetails() {
           })
       }
       else {
-        setActivityMessage(errorMessage(status));
+        setMessage(errorMessage(status));
       }
     } catch (error) {
       console.log(error);
@@ -66,6 +67,33 @@ export default function ActivityDetails() {
     return items;
   }
 
+  let addPlayer = async (e) => {
+    e.preventDefault();
+    try {
+      let result = await fetch("https://localhost:7160/activities/" + id + "/add-user", {
+        headers:
+        {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.token
+        },
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify({
+          userName: userName
+        })
+      });
+      // let resultJson = await result.json();
+      if (result.status === 200) {
+        setUserName("");
+        setMessage("User added successfully");
+      } else {
+        setMessage("Some error occured");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="activityDetails">
       <div className="activity">
@@ -74,13 +102,27 @@ export default function ActivityDetails() {
         <p>{endDate}</p>
         <p>{description}</p>
         <p>{location}</p>
+        <div className="form-box">
+          <h5>Add user to event</h5>
+          <form onSubmit={addPlayer}>
+            <input
+              id="userName"
+              type="email"
+              value={userName}
+              placeholder="Username"
+              onChange={(e) => setUserName(e.target.value)}
+              required
+            />
+            <button type="submit">Add user</button>
+          </form>
+        </div>
       </div>
       <div className="factions">
         <h3>Factions</h3>
         {factionList()}
       </div>
       <div className="errormessages">
-        <span className="message">{activityMessage ? <p>{activityMessage}</p> : null}</span>
+        <span className="message">{message ? <p>{message}</p> : null}</span>
       </div>
     </div>
   );

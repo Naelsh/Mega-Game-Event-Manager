@@ -26,18 +26,18 @@ public class RolesController : BaseController
         return Ok(role);
     }
 
-    //[HttpGet("getAll/{factionId}")]
-    //public async Task<IActionResult> GetAllForActivity(int factionID)
-    //{
-    //    var factions = await _service.GetAllRolesForFactionByID(factionID);
-    //    return Ok(factions);
-    //}
-
     [HttpPost]
     public IActionResult Post(RolePostRequest model)
     {
         _service.Post(model);
         return Ok(new { message = "Role created successfully" });
+    }
+
+    [HttpPost("{id}/add-user")]
+    public IActionResult AddUserToRole(int id, AddUserToRoleRequest model)
+    {
+        _service.AddUserToRole(id, model);
+        return Ok(new { message = "User added successfully" });
     }
 
     [HttpPut("{id}")]
