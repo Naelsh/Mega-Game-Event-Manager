@@ -42,4 +42,14 @@ public class BaseService
             throw new KeyNotFoundException("Faction not found");
         return faction;
     }
+
+    internal async Task<Activity> GetActivityById(int id)
+    {
+        var activity = await _context.Activities.FindAsync(id);
+        if (activity == null)
+            throw new KeyNotFoundException("Event not found");
+        if (activity.IsDeleted)
+            throw new AppException("Event not found");
+        return activity;
+    }
 }

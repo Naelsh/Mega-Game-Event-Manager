@@ -23,14 +23,12 @@ public interface IActivityService
     Task Update(int id, ActivityUpdateRequest model);
 }
 
-public class ActivityService : IActivityService
+public class ActivityService : BaseService, IActivityService
 {
-    private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public ActivityService(DataContext context, IMapper mapper)
+    public ActivityService(DataContext context, IMapper mapper) : base(context)
     {
-        _context = context;
         _mapper = mapper;
     }
 
@@ -130,15 +128,5 @@ public class ActivityService : IActivityService
         _context.SaveChanges();
     }
 
-
-    private async Task<Activity> GetActivityById(int id)
-    {
-        var activity = await _context.Activities.FindAsync(id);
-        if (activity == null)
-            throw new KeyNotFoundException("Event not found");
-        if (activity.IsDeleted)
-            throw new AppException("Event not found");
-        return activity;
-    }
 }
 
