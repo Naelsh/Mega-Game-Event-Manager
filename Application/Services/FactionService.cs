@@ -39,16 +39,6 @@ public class FactionService : BaseService, IFactionService
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(int id)
-    {
-        var faction = await GetFactionById(id);
-
-        faction.IsDeleted = true;
-
-        _context.Factions.Update(faction);
-        await _context.SaveChangesAsync();
-    }
-
     public async Task Update(int id, FactionUpdateRequest model)
     {
         var faction = await GetFactionById(id);
@@ -56,6 +46,16 @@ public class FactionService : BaseService, IFactionService
 
         _mapper.Map(model, faction);
         faction.Activity = activity;
+
+        _context.Factions.Update(faction);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task Delete(int id)
+    {
+        var faction = await GetFactionById(id);
+
+        faction.IsDeleted = true;
 
         _context.Factions.Update(faction);
         await _context.SaveChangesAsync();

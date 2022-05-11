@@ -60,7 +60,18 @@ public class FactionsController : BaseController
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, FactionUpdateRequest model)
     {
-        await _service.Update(id, model);
+        try
+        {
+            await _service.Update(id, model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Faction updated successfully" });
     }
 
