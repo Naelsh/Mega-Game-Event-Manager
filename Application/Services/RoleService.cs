@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 public interface IRoleService
 {
-    Task<IEnumerable<Role>> GetAllRolesForFactionByID(int factionId);
     Task<Role> GetById(int id);
     Task AddUserToRole(int id, AddUserToRoleRequest model);
     void Post(RolePostRequest model);
@@ -32,14 +31,6 @@ public class RoleService : BaseService, IRoleService
     {
         var role = await GetRoleById(id);
         return role;
-    }
-
-    public async Task<IEnumerable<Role>> GetAllRolesForFactionByID(int factionId)
-    {
-        return await _context.Roles.Where(
-            r => !r.IsDeleted &&
-            r.Faction.Id == factionId
-            ).ToListAsync();
     }
 
     public async void Post(RolePostRequest model)
