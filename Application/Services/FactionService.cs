@@ -11,30 +11,19 @@ using System.Threading.Tasks;
 
 public interface IFactionService
 {
-    Task<IEnumerable<Faction>> GetAllFactionForEventByID(int activityId);
     Task<Faction> GetById(int id);
     Task Post(FactionPostRequest model);
     Task Delete(int id);
     Task Update(int id, FactionUpdateRequest model);
 }
 
-public class FactionService : IFactionService
+public class FactionService : BaseService, IFactionService
 {
-    private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public FactionService(DataContext context, IMapper mapper)
+    public FactionService(DataContext context, IMapper mapper) :base(context)
     {
-        _context = context;
         _mapper = mapper;
-    }
-
-    public async Task<IEnumerable<Faction>> GetAllFactionForEventByID(int activityId)
-    {
-        return await _context.Factions.Where(
-            f => !f.IsDeleted &&
-            f.Activity.Id == activityId
-            ).ToListAsync();
     }
 
     public async Task<Faction> GetById(int id)
