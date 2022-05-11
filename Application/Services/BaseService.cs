@@ -30,14 +30,15 @@ public class BaseService
     internal User GetUserById(int id)
     {
         var user = _context.Users.Find(id);
-        if (user == null) throw new KeyNotFoundException("User not found");
+        if (user == null || user.IsDeleted)
+            throw new KeyNotFoundException("User not found");
         return user;
     }
 
     internal async Task<User> GetUserByUserName(string userName)
     {
         var user = await _context.Users.Include(u => u.Roles).FirstOrDefaultAsync(x => x.Username == userName);
-        if (user == null)
+        if (user == null || user.IsDeleted)
             throw new KeyNotFoundException("User could not be found");
         return user;
     }
@@ -53,10 +54,8 @@ public class BaseService
     internal async Task<Activity> GetActivityById(int id)
     {
         var activity = await _context.Activities.FindAsync(id);
-        if (activity == null)
+        if (activity == null || activity.IsDeleted)
             throw new KeyNotFoundException("Event not found");
-        if (activity.IsDeleted)
-            throw new AppException("Event not found");
         return activity;
     }
 }
