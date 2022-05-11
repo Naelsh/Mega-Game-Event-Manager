@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Faction from "../Factions/Faction";
 import '../Styling/Form.css';
+import User from "../Users/User";
 import './ActivityDetails.css';
 
 export default function ActivityDetails() {
@@ -13,6 +14,7 @@ export default function ActivityDetails() {
   const [endDate, setEndDate] = useState("");
   const [message, setMessage] = useState("");
   const [factions, setFactions] = useState([]);
+  const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState("");
 
   
@@ -48,6 +50,7 @@ export default function ActivityDetails() {
             setStartDate(json.startDate)
             setEndDate(json.endDate)
             setFactions(json.factions)
+            setUsers(json.users)
           })
       }
       else {
@@ -61,7 +64,16 @@ export default function ActivityDetails() {
   let factionList = () => {
     let items = factions.map((faction) => (
       <ul key={faction.id}>
-        <Faction faction={faction} />
+        <Faction faction={faction} activityId={id}/>
+      </ul>
+    ));
+    return items;
+  }
+
+  let userList = () => {
+    let items = users.map((user) => (
+      <ul key={user.id}>
+        <User user={user} />
       </ul>
     ));
     return items;
@@ -87,7 +99,7 @@ export default function ActivityDetails() {
         setUserName("");
         setMessage("User added successfully");
       } else {
-        setMessage("Some error occured");
+        setMessage(result.message);
       }
     } catch (error) {
       console.log(error);
@@ -102,8 +114,10 @@ export default function ActivityDetails() {
         <p>{endDate}</p>
         <p>{description}</p>
         <p>{location}</p>
+        <h3>Participants</h3>
+        {userList()}
         <div className="form-box">
-          <h5>Add user to event</h5>
+          <h4>Add user to event</h4>
           <form onSubmit={addPlayer}>
             <input
               id="userName"
@@ -115,14 +129,14 @@ export default function ActivityDetails() {
             />
             <button type="submit">Add user</button>
           </form>
+          <div className="errormessages">
+            <span className="message">{message ? <p>{message}</p> : null}</span>
+          </div>
         </div>
       </div>
       <div className="factions">
         <h3>Factions</h3>
         {factionList()}
-      </div>
-      <div className="errormessages">
-        <span className="message">{message ? <p>{message}</p> : null}</span>
       </div>
     </div>
   );
