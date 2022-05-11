@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 public interface IActivityService
 {
     Task<IEnumerable<Activity>> GetAll();
-    Task<IEnumerable<Faction>> GetFactionsForActivity(int id);
-    Task<IEnumerable<Role>> GetRolesForActivity(int id);
     Task<DetailedActivity> GetDetailedById(int id);
     Task<Activity> GetById(int id);
     void AddUserToActivity(int id, AddUserToActivityRequest userName);
