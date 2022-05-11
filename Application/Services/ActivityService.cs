@@ -17,7 +17,7 @@ public interface IActivityService
     Task<IEnumerable<Activity>> GetAll();
     Task<DetailedActivity> GetDetailedById(int id);
     Task<Activity> GetById(int id);
-    void AddUserToActivity(int id, AddUserToActivityRequest userName);
+    Task AddUserToActivity(int id, AddUserToActivityRequest userName);
     void Post(ActivityPostRequest model);
     Task Delete(int id);
     Task Update(int id, ActivityUpdateRequest model);
@@ -80,20 +80,16 @@ public class ActivityService : BaseService, IActivityService
         return detailedActivity;
     }
 
-    public void AddUserToActivity(int id, AddUserToActivityRequest model)
+    public async Task AddUserToActivity(int id, AddUserToActivityRequest model)
     {
-        var user = _context.Users.Include(u => u.Activities).FirstOrDefault(x => x.Username == model.UserName);
-        if (user == null)
-            throw new AppException("User not found");
-        var activity = _context.Activities.Find(id);
-        if (activity == null)
-            throw new AppException("Activity not found");
+        var user = await GetUserByUserName(model.UserName);
+        var activity = await GetActivityById(id);
 
         if (user.Activities.Contains(activity))
             throw new AppException("User already added to activity");
 
         user.Activities.Add(activity);
-        _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 
     public void Post(ActivityPostRequest model)
