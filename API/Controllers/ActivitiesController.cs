@@ -98,9 +98,9 @@ public class ActivitiesController : BaseController
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e.InnerException);
         }
-        return Ok(new { messsage = "User added successfully" });
+        return Ok(new { message = "User added successfully" });
     }
 
     [HttpPost]
