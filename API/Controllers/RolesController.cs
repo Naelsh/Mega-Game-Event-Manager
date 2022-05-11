@@ -83,14 +83,36 @@ public class RolesController : BaseController
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, RoleUpdateRequest model)
     {
-        await _service.Update(id, model);
+        try
+        {
+            await _service.Update(id, model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Role updated successfully" });
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _service.Delete(id);
+        try
+        {
+            await _service.Delete(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Role deleted succesfully" });
     }
 }

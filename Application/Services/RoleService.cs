@@ -56,16 +56,6 @@ public class RoleService : BaseService, IRoleService
         _context.SaveChanges();
     }
 
-    public async Task Delete(int id)
-    {
-        var role = await GetRoleById(id);
-
-        role.IsDeleted = true;
-
-        _context.Roles.Update(role);
-        _context.SaveChanges();
-    }
-
     public async Task Update(int id, RoleUpdateRequest model)
     {
         var role = await GetRoleById(id);
@@ -77,4 +67,15 @@ public class RoleService : BaseService, IRoleService
         _context.Roles.Update(role);
         _context.SaveChanges();
     }
+
+    public async Task Delete(int id)
+    {
+        var role = await GetRoleById(id);
+
+        role.IsDeleted = true;
+
+        _context.Roles.Update(role);
+        _context.SaveChanges();
+    }
+
 }
