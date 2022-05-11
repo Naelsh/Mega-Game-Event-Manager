@@ -86,11 +86,11 @@ public class UsersController : BaseController
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public IActionResult Register(RegisterRequest model)
+    public async Task<IActionResult> Register(RegisterRequest model)
     {
         try
         {
-            _userService.Register(model);
+            await _userService.Register(model);
         }
         catch (AppException ae)
         {
@@ -104,11 +104,11 @@ public class UsersController : BaseController
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, UserUpdateRequest model)
+    public async Task<IActionResult> Update(int id, UserUpdateRequest model)
     {
         try
         {
-            _userService.Update(id, model);
+            await _userService.Update(id, model);
         }
         catch (KeyNotFoundException knfe)
         {
@@ -122,11 +122,11 @@ public class UsersController : BaseController
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
-            _userService.Delete(id);
+            await _userService.Delete(id);
         }
         catch (KeyNotFoundException knfe)
         {
