@@ -1,5 +1,6 @@
 import React from 'react';
 import Role from '../Roles/Role';
+import './Factions.css';
 
 export default function Faction (props) {
 
