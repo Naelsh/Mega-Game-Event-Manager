@@ -19,15 +19,19 @@ public interface IRoleService
     Task Update(int id, RoleUpdateRequest model);
 }
 
-public class RoleService : IRoleService
+public class RoleService : BaseService, IRoleService
 {
-    private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public RoleService(DataContext context, IMapper mapper)
+    public RoleService(DataContext context, IMapper mapper) : base(context)
     {
-        _context = context;
         _mapper = mapper;
+    }
+
+    public async Task<Role> GetById(int id)
+    {
+        var role = await GetRoleById(id);
+        return role;
     }
 
     public async Task<IEnumerable<Role>> GetAllRolesForFactionByID(int factionId)
@@ -36,12 +40,6 @@ public class RoleService : IRoleService
             r => !r.IsDeleted &&
             r.Faction.Id == factionId
             ).ToListAsync();
-    }
-
-    public async Task<Role> GetById(int id)
-    {
-        var role = await GetRoleById(id);
-        return role;
     }
 
     public async void Post(RolePostRequest model)
@@ -102,16 +100,4 @@ public class RoleService : IRoleService
             throw new AppException("Activity could not be found");
         return faction;
     }
-
-    private async Task<Role> GetRoleById(int id)
-    {
-        var role = await _context.Roles.FindAsync(id);
-        if (role == null)
-            throw new KeyNotFoundException("Role not found");
-        if (role.IsDeleted)
-            throw new AppException("Role not found");
-        return role;
-    }
-
-    
 }
