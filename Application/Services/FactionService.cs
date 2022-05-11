@@ -40,7 +40,7 @@ public class FactionService : BaseService, IFactionService
         faction.Activity = activity;
 
         _context.Factions.Add(faction);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     public async Task Delete(int id)
@@ -50,39 +50,19 @@ public class FactionService : BaseService, IFactionService
         faction.IsDeleted = true;
 
         _context.Factions.Update(faction);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(int id, FactionUpdateRequest model)
     {
         var faction = await GetFactionById(id);
-        Activity activity = await GetActivityById(model.ActivityId);
+        var activity = await GetActivityById(model.ActivityId);
 
         _mapper.Map(model, faction);
         faction.Activity = activity;
 
         _context.Factions.Update(faction);
-        _context.SaveChanges();
-    }
-
-    private async Task<Activity> GetActivityById(int activityId)
-    {
-        var activity = await _context.Activities.FindAsync(activityId);
-        if (activity == null)
-            throw new AppException("Activity could not be found");
-        if (activity.IsDeleted)
-            throw new AppException("Activity could not be found");
-        return activity;
-    }
-
-    private async Task<Faction> GetFactionById(int id)
-    {
-        var faction = await _context.Factions.FindAsync(id);
-        if (faction == null)
-            throw new KeyNotFoundException("Faction not found");
-        if (faction.IsDeleted)
-            throw new AppException("Faction not found");
-        return faction;
+        await _context.SaveChangesAsync();
     }
 }
 
