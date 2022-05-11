@@ -60,4 +60,12 @@ public class BaseService
             throw new KeyNotFoundException("Event not found");
         return activity;
     }
+
+    internal async Task<Activity> GetActivityWithParticipantsById(int id)
+    {
+        var activity = await _context.Activities.Include(a => a.Participants).FirstOrDefaultAsync(x => x.Id == id);
+        if (activity == null || activity.IsDeleted)
+            throw new KeyNotFoundException("Event not found");
+        return activity;
+    }
 }

@@ -49,7 +49,7 @@ public class RoleService : BaseService, IRoleService
     {
         var user = await GetUserWithRolesByUserName(model.Username);
         var role = await GetRoleById(id);
-        var activity = await GetActivityById(model.ActivityId);
+        var activity = await GetActivityWithParticipantsById(model.ActivityId);
         if (!activity.Participants.Contains(user))
             throw new AppException("User not attending activity");
         if (user.Roles.Contains(role))
