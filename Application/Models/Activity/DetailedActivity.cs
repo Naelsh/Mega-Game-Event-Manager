@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Models.Faction;
-using Domain;
+﻿using Application.Models.Faction;
 
 namespace Application.Models.Activity;
 

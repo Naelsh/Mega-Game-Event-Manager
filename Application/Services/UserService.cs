@@ -9,34 +9,32 @@ namespace Application.Services;
 
 public interface IUserService
 {
-    AuthenticateResponse Authenticate(AuthenticateRequest model);
+    Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
     IEnumerable<User> GetAll();
-    User GetById(int id);
-    void Register(RegisterRequest model);
-    void Update(int id, UserUpdateRequest model);
-    void Delete(int id);
+    Task<User> GetById(int id);
+    Task Register(RegisterRequest model);
+    Task Update(int id, UserUpdateRequest model);
+    Task Delete(int id);
 }
 
-public class UserService : IUserService
+public class UserService : BaseService, IUserService
 {
-    private DataContext _context;
     private readonly IMapper _mapper;
 
     public UserService(
         DataContext context,
-        IMapper mapper)
+        IMapper mapper) :base(context)
     {
-        _context = context;
         _mapper = mapper;
     }
 
-    public AuthenticateResponse Authenticate(AuthenticateRequest model)
+    public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
-        var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
+        var user = await GetUserByUserName(model.Username);
 
         // validate
         if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
-            throw new AppException("Username or password is incorrect");
+            throw new ArgumentException("Username or password is incorrect");
 
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);
@@ -45,15 +43,21 @@ public class UserService : IUserService
 
     public IEnumerable<User> GetAll()
     {
+        var result = _context.Users.Where(u => !u.IsDeleted).ToList();
+        if (result == null || result.Count == 0)
+        {
+            throw new NullReferenceException("No users found");
+        }
         return _context.Users;
     }
 
-    public User GetById(int id)
+    public async Task<User> GetById(int id)
     {
-        return getUser(id);
+        var user = await GetUserById(id);
+        return user;
     }
 
-    public void Register(RegisterRequest model)
+    public async Task Register(RegisterRequest model)
     {
         // validate
         if (_context.Users.Any(x => x.Username == model.Username))
@@ -67,14 +71,13 @@ public class UserService : IUserService
 
         // save user
         _context.Users.Add(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int id, UserUpdateRequest model)
+    public async Task Update(int id, UserUpdateRequest model)
     {
-        var user = getUser(id);
+        var user = await GetUserById(id);
 
-        // validate
         if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
 
@@ -82,39 +85,33 @@ public class UserService : IUserService
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
+        // copy model to user and save
+        _mapper.Map(model, user);
+
         if (model.ActivityId > 0)
         {
-            user.Activities.Add(_context.Activities.Find(model.ActivityId));
+            var activity = await GetActivityById(model.ActivityId);
+            user.Activities.Add(activity);
         }
 
         if (model.RoleId > 0)
         {
-            user.Roles.Add(_context.Roles.Find(model.RoleId));
+            var role = await GetRoleById(model.RoleId);
+            user.Roles.Add(role);
         }
 
-        // copy model to user and save
-        _mapper.Map(model, user);
         _context.Users.Update(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var user = getUser(id);
+        var user = await GetUserById(id);
         user.IsDeleted = true;
         user.FirstName = "Anonymized " + DateTime.UtcNow.ToString();
         user.LastName = "Anonymized " + DateTime.UtcNow.ToString();
         user.Username = "Anonymized " + DateTime.UtcNow.ToString();
         _context.Users.Update(user);
-        _context.SaveChanges();
-    }
-
-    // helper methods
-
-    private User getUser(int id)
-    {
-        var user = _context.Users.Find(id);
-        if (user == null) throw new KeyNotFoundException("User not found");
-        return user;
+        await _context.SaveChangesAsync();
     }
 }

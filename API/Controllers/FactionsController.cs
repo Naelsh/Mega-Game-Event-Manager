@@ -1,6 +1,7 @@
 ﻿using Application.Models.Faction;
 using Application.Services;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -22,35 +23,73 @@ public class FactionsController : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var faction = await _service.GetById(id);
+        Faction faction;
+        try
+        {
+            faction = await _service.GetById(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(faction);
     }
 
-    //[HttpGet("getAll/{activityId}")]
-    //public async Task<IActionResult> GetAllForActivity(int activityId)
-    //{
-    //    var factions = await _service.GetAllFactionForEventByID(activityId);
-    //    return Ok(factions);
-    //}
-
     [HttpPost]
-    public IActionResult Post(FactionPostRequest model)
+    public async Task<IActionResult> Post(FactionPostRequest model)
     {
-        _service.Post(model);
+        try
+        {
+            await _service.Post(model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Faction created successfully" });
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, FactionUpdateRequest model)
     {
-        await _service.Update(id, model);
+        try
+        {
+            await _service.Update(id, model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Faction updated successfully" });
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _service.Delete(id);
+        try
+        {
+            await _service.Delete(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Faction deleted succesfully" });
     }
 }

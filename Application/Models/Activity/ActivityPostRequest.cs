@@ -4,7 +4,6 @@ namespace Application.Models.Activity;
 
 public class ActivityPostRequest
 {
-    [Required]
     [StringLength(50, ErrorMessage = "{0} length must be between {2} and {1} characters", MinimumLength = 4)]
     public string? Name { get; set; }
     [Required]

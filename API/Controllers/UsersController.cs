@@ -3,6 +3,7 @@ using Application.Helpers;
 using Application.Models.User;
 using Application.Services;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -26,45 +27,115 @@ public class UsersController : BaseController
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public IActionResult Authenticate(AuthenticateRequest model)
+    public async Task<IActionResult> Authenticate(AuthenticateRequest model)
     {
-        var response = _userService.Authenticate(model);
+        AuthenticateResponse response = null;
+        try
+        {
+            response = await _userService.Authenticate(model);
+        }
+        catch (ArgumentException ae)
+        {
+            BadRequest(ae.Message);
+        }
+        catch (Exception ex)
+        {
+            BadRequest(ex.Message);
+        }
         return Ok(response);
+    }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        IEnumerable<User> users = null;
+        try
+        {
+            users = _userService.GetAll();
+        }
+        catch (NullReferenceException nre)
+        {
+            NotFound(nre.Message);
+        }
+        catch (Exception ex)
+        {
+            BadRequest(ex.Message);
+        }
+        return Ok(users);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        User user = null;
+        try
+        {
+            user = await _userService.GetById(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return Ok(user);
     }
 
     [AllowAnonymous]
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest model)
     {
-        _userService.Register(model);
+        try
+        {
+            _userService.Register(model);
+        }
+        catch (AppException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Registration successful" });
-    }
-
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var users = _userService.GetAll();
-        return Ok(users);
-    }
-
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var user = _userService.GetById(id);
-        return Ok(user);
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, UserUpdateRequest model)
     {
-        _userService.Update(id, model);
+        try
+        {
+            _userService.Update(id, model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "User updated successfully" });
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        _userService.Delete(id);
+        try
+        {
+            _userService.Delete(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "User deleted successfully" });
     }
 }

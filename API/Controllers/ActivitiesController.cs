@@ -22,6 +22,25 @@ public class ActivitiesController : BaseController
         _mapper = mapper;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        IEnumerable<Activity> activities;
+        try
+        {
+            activities = await _service.GetAll();
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok(activities);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -29,6 +48,49 @@ public class ActivitiesController : BaseController
         try
         {
             activity = await _service.GetById(id);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok(activity);
+    }
+
+
+    [HttpGet("{id}/details")]
+    public async Task<IActionResult> GetDetailed(int id)
+    {
+        DetailedActivity detailedActivity;
+        try
+        {
+            detailedActivity = await _service.GetDetailedById(id);
+        }
+        catch (NullReferenceException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        return Ok(detailedActivity);
+    }
+
+    [HttpPost("{id}/add-user")]
+    public IActionResult AddUser(int id, AddUserToActivityRequest model)
+    {
+        try
+        {
+            _service.AddUserToActivity(id, model);
         }
         catch (AppException e)
         {
@@ -38,62 +100,68 @@ public class ActivitiesController : BaseController
         {
             return BadRequest(e.Message);
         }
-        return Ok(activity);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var activities = await _service.GetAll();
-        return Ok(activities);
-    }
-
-    [HttpGet("{id}/details")]
-    public async Task<IActionResult> GetDetailed(int id)
-    {
-        var detailedActivity = await _service.GetDetailedById(id);
-        return Ok(detailedActivity);
-    }
-
-    [HttpGet("{id}/factions")]
-    public async Task<IActionResult> GetFactions(int id)
-    {
-        var factions = await _service.GetFactionsForActivity(id);
-        return Ok(factions);
-    }
-
-    [HttpGet("{id}/roles")]
-    public async Task<IActionResult> GetRoles(int id)
-    {
-        var roles = await _service.GetRolesForActivity(id);
-        return Ok(roles);
+        return Ok(new { messsage = "User added successfully" });
     }
 
     [HttpPost]
     public IActionResult Post(ActivityPostRequest model)
     {
-        _service.Post(model);
+        try
+        {
+            _service.Post(model);
+        }
+        catch (AppException e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(new { message = "Activity created successfully" });
-    }
-
-    [HttpPost("{id}/add-user")]
-    public IActionResult AddUser(int id, AddUserToActivityRequest model)
-    {
-        _service.AddUserToActivity(id, model);
-        return Ok(new { messsage = "User added successfully" });
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, ActivityUpdateRequest model)
     {
-        await _service.Update(id, model);
+        try
+        {
+            await _service.Update(id, model);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(new { message = "Activity updated successfully" });
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _service.Delete(id);
+        try
+        {
+            await _service.Delete(id);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (AppException ae)
+        {
+            return NotFound(ae.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         return Ok(new { message = "Activity deleted succesfully" });
     }
 }
