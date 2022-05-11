@@ -1,12 +1,6 @@
-﻿using Application.Helpers;
-using Domain;
+﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services;
 
@@ -27,9 +21,9 @@ public class BaseService
         return role;
     }
 
-    internal User GetUserById(int id)
+    internal async Task<User> GetUserById(int id)
     {
-        var user = _context.Users.Find(id);
+        var user = await _context.Users.FindAsync(id);
         if (user == null || user.IsDeleted)
             throw new KeyNotFoundException("User not found");
         return user;
