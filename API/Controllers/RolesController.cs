@@ -1,4 +1,5 @@
-﻿using Application.Models.Role;
+﻿using Application.Helpers;
+using Application.Models.Role;
 using Application.Services;
 using AutoMapper;
 using Domain;
@@ -60,7 +61,22 @@ public class RolesController : BaseController
     [HttpPost("{id}/add-user")]
     public IActionResult AddUserToRole(int id, AddUserToRoleRequest model)
     {
-        _service.AddUserToRole(id, model);
+        try
+        {
+            _service.AddUserToRole(id, model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (AppException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "User added successfully" });
     }
 

@@ -44,6 +44,18 @@ public class RoleService : BaseService, IRoleService
         _context.SaveChanges();
     }
 
+    public async Task AddUserToRole(int id, AddUserToRoleRequest model)
+    {
+        var user = await GetUserByUserName(model.Username);
+        var role = await GetRoleById(id);
+
+        if (user.Roles.Contains(role))
+            throw new AppException("Role allready added to user");
+
+        user.Roles.Add(role);
+        _context.SaveChanges();
+    }
+
     public async Task Delete(int id)
     {
         var role = await GetRoleById(id);
@@ -63,18 +75,6 @@ public class RoleService : BaseService, IRoleService
         role.Faction = faction;
 
         _context.Roles.Update(role);
-        _context.SaveChanges();
-    }
-
-    public async Task AddUserToRole(int id, AddUserToRoleRequest model)
-    {
-        var user = await GetUserByUserName(model.Username);
-        var role = await GetRoleById(id);
-
-        if (user.Roles.Contains(role))
-            throw new AppException("Role allready added to user");
-
-        user.Roles.Add(role);
         _context.SaveChanges();
     }
 }
