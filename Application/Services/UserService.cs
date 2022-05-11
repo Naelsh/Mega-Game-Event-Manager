@@ -43,8 +43,8 @@ public class UserService : BaseService, IUserService
 
     public IEnumerable<User> GetAll()
     {
-        var result = _context.Users;
-        if (result == null)
+        var result = _context.Users.Where(u => !u.IsDeleted).ToList();
+        if (result == null || result.Count == 0)
         {
             throw new NullReferenceException("No users found");
         }
