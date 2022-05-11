@@ -13,7 +13,7 @@ public interface IRoleService
 {
     Task<Role> GetById(int id);
     Task AddUserToRole(int id, AddUserToRoleRequest model);
-    void Post(RolePostRequest model);
+    Task Post(RolePostRequest model);
     Task Delete(int id);
     Task Update(int id, RoleUpdateRequest model);
 }
@@ -33,7 +33,7 @@ public class RoleService : BaseService, IRoleService
         return role;
     }
 
-    public async void Post(RolePostRequest model)
+    public async Task Post(RolePostRequest model)
     {
         var role = _mapper.Map<Role>(model);
         var faction = await GetFactionById(model.FactionId);

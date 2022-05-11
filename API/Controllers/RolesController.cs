@@ -41,11 +41,11 @@ public class RolesController : BaseController
     }
 
     [HttpPost]
-    public IActionResult Post(RolePostRequest model)
+    public async Task<IActionResult> Post(RolePostRequest model)
     {
         try
         {
-            _service.Post(model);
+            await _service.Post(model);
         }
         catch (KeyNotFoundException knfe)
         {
@@ -59,11 +59,11 @@ public class RolesController : BaseController
     }
 
     [HttpPost("{id}/add-user")]
-    public IActionResult AddUserToRole(int id, AddUserToRoleRequest model)
+    public async Task<IActionResult> AddUserToRole(int id, AddUserToRoleRequest model)
     {
         try
         {
-            _service.AddUserToRole(id, model);
+            await _service.AddUserToRole(id, model);
         }
         catch (KeyNotFoundException knfe)
         {
