@@ -16,9 +16,10 @@ export default function ActivityDetails() {
   const [factions, setFactions] = useState([]);
   const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState("");
-
+  const [factionName, setFactionName] = useState("");
+  const [factionDescription, setFactionDescription] = useState("");
+  const [addFactionMessage, setAddFactionMessage] = useState("");
   
-
   useEffect(() => {
     loadActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,10 +95,40 @@ export default function ActivityDetails() {
           userName: userName
         })
       });
-      // let resultJson = await result.json();
+
       if (result.status === 200) {
         setUserName("");
         setMessage("User added successfully");
+      } else {
+        setMessage(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  let addFaction = async (e) => {
+    e.preventDefault();
+    try {
+      let result = await fetch("https://localhost:7160/factions/", {
+        headers:
+        {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.token
+        },
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify({
+          name: factionName,
+          description: factionDescription,
+          activityId: id
+        })
+      });
+      
+      if (result.status === 200) {
+        setFactionName("");
+        setFactionDescription("");
+        setAddFactionMessage("Faction added successfully");
       } else {
         setMessage(result.message);
       }
@@ -136,6 +167,28 @@ export default function ActivityDetails() {
       </div>
       <div className="factions">
         <h3>Factions</h3>
+        <form onSubmit={addFaction}>
+          <input 
+            id="factionName"
+            type="text"
+            value={factionName}
+            placeholder="Faction name"
+            onChange={(e) => setFactionName(e.target.value)}
+            required
+          />
+          <input 
+            id="factionDescription"
+            type="text"
+            value={factionDescription}
+            placeholder="Description"
+            onChange={(e) => setFactionDescription(e.target.value)}
+            required
+          />
+          <button type="submit">Add faction</button>
+        </form>
+        <div className="errormessages">
+            <span className="message">{addFactionMessage ? <p>{addFactionMessage}</p> : null}</span>
+        </div>
         {factionList()}
       </div>
     </div>
