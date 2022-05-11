@@ -1,6 +1,7 @@
 ﻿using Application.Models.Role;
 using Application.Services;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -22,7 +23,15 @@ public class RolesController : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var role = await _service.GetById(id);
+        Role role;
+        try
+        {
+            role = await _service.GetById(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
         return Ok(role);
     }
 
