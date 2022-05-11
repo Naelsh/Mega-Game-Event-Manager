@@ -114,10 +114,6 @@ public class UsersController : BaseController
         {
             return NotFound(knfe.Message);
         }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return BadRequest(ex.Message);
-        }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
@@ -128,7 +124,22 @@ public class UsersController : BaseController
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        _userService.Delete(id);
+        try
+        {
+            _userService.Delete(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "User deleted successfully" });
     }
 }

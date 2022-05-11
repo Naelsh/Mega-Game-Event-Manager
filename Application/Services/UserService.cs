@@ -86,13 +86,15 @@ public class UserService : IUserService
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-        if (model.ActivityId < 1)
-            throw new ArgumentOutOfRangeException("ActivityId out of range");
-        user.Activities.Add(_context.Activities.Find(model.ActivityId));
+        var activity = _context.Activities.Find(model.ActivityId);
+        if (activity == null)
+            throw new KeyNotFoundException("Activity not found");
+        user.Activities.Add(activity);
 
-        if (model.RoleId < 1)
-            throw new ArgumentOutOfRangeException("RoleId out of range");
-        user.Roles.Add(_context.Roles.Find(model.RoleId));
+        var role = _context.Roles.Find(model.RoleId);
+        if (role == null)
+            throw new KeyNotFoundException("Role not found");
+        user.Roles.Add(role);
 
         // copy model to user and save
         _mapper.Map(model, user);
