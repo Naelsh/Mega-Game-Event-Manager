@@ -7,11 +7,12 @@ export default function Faction (props) {
   let roles = () => {
     let items = props.faction.roles.map((role) => (
       <ul key={role.id}>
-        <Role role={role}/>
+        <Role role={role} activityId={props.activityId}/>
       </ul>
     ));
     return items;
   }
+
   return (
     <li className='faction'>
       <p><strong>{props.faction.name}</strong></p>
