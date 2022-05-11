@@ -9,12 +9,12 @@ namespace Application.Services;
 
 public interface IUserService
 {
-    AuthenticateResponse Authenticate(AuthenticateRequest model);
+    Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
     IEnumerable<User> GetAll();
-    User GetById(int id);
-    void Register(RegisterRequest model);
-    void Update(int id, UserUpdateRequest model);
-    void Delete(int id);
+    Task<User> GetById(int id);
+    Task Register(RegisterRequest model);
+    Task Update(int id, UserUpdateRequest model);
+    Task Delete(int id);
 }
 
 public class UserService : BaseService, IUserService
@@ -28,9 +28,9 @@ public class UserService : BaseService, IUserService
         _mapper = mapper;
     }
 
-    public AuthenticateResponse Authenticate(AuthenticateRequest model)
+    public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
-        var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
+        var user = await GetUserByUserName(model.Username);
 
         // validate
         if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
@@ -51,12 +51,13 @@ public class UserService : BaseService, IUserService
         return _context.Users;
     }
 
-    public User GetById(int id)
+    public async Task<User> GetById(int id)
     {
-        return GetUserById(id);
+        var user = await GetUserById(id);
+        return user;
     }
 
-    public void Register(RegisterRequest model)
+    public async Task Register(RegisterRequest model)
     {
         // validate
         if (_context.Users.Any(x => x.Username == model.Username))
@@ -70,12 +71,12 @@ public class UserService : BaseService, IUserService
 
         // save user
         _context.Users.Add(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int id, UserUpdateRequest model)
+    public async Task Update(int id, UserUpdateRequest model)
     {
-        var user = GetUserById(id);
+        var user = await GetUserById(id);
 
         if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
@@ -97,17 +98,17 @@ public class UserService : BaseService, IUserService
         // copy model to user and save
         _mapper.Map(model, user);
         _context.Users.Update(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var user = GetUserById(id);
+        var user = await GetUserById(id);
         user.IsDeleted = true;
         user.FirstName = "Anonymized " + DateTime.UtcNow.ToString();
         user.LastName = "Anonymized " + DateTime.UtcNow.ToString();
         user.Username = "Anonymized " + DateTime.UtcNow.ToString();
         _context.Users.Update(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }
