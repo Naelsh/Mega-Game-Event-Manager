@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import User from '../Users/User';
+import './Role.css';
 
 export default function Role(props) {
   const [userName, setUserName] = useState("");

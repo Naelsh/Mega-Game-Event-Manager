@@ -1,0 +1,24 @@
+.role {
+  background-color: rgb(255, 225, 180);
+  padding: 10px;
+}
+
+.role .users {
+  background-color: blanchedalmond;
+  padding: 5px;
+  margin: 5px;
+}
+
+.role .users .form-box form{
+  display: flex;
+  flex-direction: row;
+}
+
+.role .users .form-box form input {
+  flex-basis: 80%;
+}
+
+.role .users .form-box form button {
+  flex-basis: 10%;
+  font-size: large;
+}
