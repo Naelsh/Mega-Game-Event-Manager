@@ -17,16 +17,14 @@ public interface IUserService
     void Delete(int id);
 }
 
-public class UserService : IUserService
+public class UserService : BaseService, IUserService
 {
-    private DataContext _context;
     private readonly IMapper _mapper;
 
     public UserService(
         DataContext context,
-        IMapper mapper)
+        IMapper mapper) :base(context)
     {
-        _context = context;
         _mapper = mapper;
     }
 
@@ -55,7 +53,7 @@ public class UserService : IUserService
 
     public User GetById(int id)
     {
-        return getUser(id);
+        return GetUserById(id);
     }
 
     public void Register(RegisterRequest model)
@@ -77,7 +75,7 @@ public class UserService : IUserService
 
     public void Update(int id, UserUpdateRequest model)
     {
-        var user = getUser(id);
+        var user = GetUserById(id);
 
         if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
@@ -104,21 +102,12 @@ public class UserService : IUserService
 
     public void Delete(int id)
     {
-        var user = getUser(id);
+        var user = GetUserById(id);
         user.IsDeleted = true;
         user.FirstName = "Anonymized " + DateTime.UtcNow.ToString();
         user.LastName = "Anonymized " + DateTime.UtcNow.ToString();
         user.Username = "Anonymized " + DateTime.UtcNow.ToString();
         _context.Users.Update(user);
         _context.SaveChanges();
-    }
-
-    // helper methods
-
-    private User getUser(int id)
-    {
-        var user = _context.Users.Find(id);
-        if (user == null) throw new KeyNotFoundException("User not found");
-        return user;
     }
 }

@@ -27,6 +27,13 @@ public class BaseService
         return role;
     }
 
+    internal User GetUserById(int id)
+    {
+        var user = _context.Users.Find(id);
+        if (user == null) throw new KeyNotFoundException("User not found");
+        return user;
+    }
+
     internal async Task<User> GetUserByUserName(string userName)
     {
         var user = await _context.Users.Include(u => u.Roles).FirstOrDefaultAsync(x => x.Username == userName);
