@@ -13,7 +13,7 @@ public interface IFactionService
 {
     Task<IEnumerable<Faction>> GetAllFactionForEventByID(int activityId);
     Task<Faction> GetById(int id);
-    void Post(FactionPostRequest model);
+    Task Post(FactionPostRequest model);
     Task Delete(int id);
     Task Update(int id, FactionUpdateRequest model);
 }
@@ -43,7 +43,7 @@ public class FactionService : IFactionService
         return faction;
     }
 
-    public async void Post(FactionPostRequest model)
+    public async Task Post(FactionPostRequest model)
     {
         var faction = _mapper.Map<Faction>(model);
         Activity activity = await GetActivityById(model.ActivityId);

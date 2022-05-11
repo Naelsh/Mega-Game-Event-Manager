@@ -34,9 +34,9 @@ public class FactionsController : BaseController
     //}
 
     [HttpPost]
-    public IActionResult Post(FactionPostRequest model)
+    public async Task<IActionResult> Post(FactionPostRequest model)
     {
-        _service.Post(model);
+        await _service.Post(model);
         return Ok(new { message = "Faction created successfully" });
     }
 
