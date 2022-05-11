@@ -57,6 +57,7 @@ public class ActivityService : BaseService, IActivityService
                                   StartDate = activity.StartDate,
                                   EndDate = activity.EndDate,
                                   Location = activity.Location,
+                                  Users = activity.Participants,
                                   Factions = (from faction in activity.Factions
                                               select new DetailedFaction()
                                               {

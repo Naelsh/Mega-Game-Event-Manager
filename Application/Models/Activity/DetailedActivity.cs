@@ -10,4 +10,5 @@ public class DetailedActivity
     public string? Description { get; set; }
     public string? Location { get; set; }
     public List<DetailedFaction> Factions { get; set; } = new List<DetailedFaction>();
+    public List<Domain.User> Users { get; set; } = new List<Domain.User>();
 }
