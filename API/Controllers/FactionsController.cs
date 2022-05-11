@@ -1,6 +1,7 @@
 ﻿using Application.Models.Faction;
 using Application.Services;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -22,16 +23,21 @@ public class FactionsController : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var faction = await _service.GetById(id);
+        Faction faction;
+        try
+        {
+            faction = await _service.GetById(id);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(faction);
     }
-
-    //[HttpGet("getAll/{activityId}")]
-    //public async Task<IActionResult> GetAllForActivity(int activityId)
-    //{
-    //    var factions = await _service.GetAllFactionForEventByID(activityId);
-    //    return Ok(factions);
-    //}
 
     [HttpPost]
     public async Task<IActionResult> Post(FactionPostRequest model)
