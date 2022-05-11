@@ -32,13 +32,28 @@ public class RolesController : BaseController
         {
             return NotFound(knfe.Message);
         }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(role);
     }
 
     [HttpPost]
     public IActionResult Post(RolePostRequest model)
     {
-        _service.Post(model);
+        try
+        {
+            _service.Post(model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Role created successfully" });
     }
 
