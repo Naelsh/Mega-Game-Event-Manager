@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 public interface IRoleService
 {
@@ -48,7 +49,9 @@ public class RoleService : BaseService, IRoleService
     {
         var user = await GetUserByUserName(model.Username);
         var role = await GetRoleById(id);
-
+        var activity = await GetActivityById(model.ActivityId);
+        if (!activity.Participants.Contains(user))
+            throw new AppException("User not attending activity");
         if (user.Roles.Contains(role))
             throw new AppException("Role allready added to user");
 
@@ -75,7 +78,6 @@ public class RoleService : BaseService, IRoleService
         role.IsDeleted = true;
 
         _context.Roles.Update(role);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
-
 }
