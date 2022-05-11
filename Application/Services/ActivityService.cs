@@ -57,6 +57,7 @@ public class ActivityService : BaseService, IActivityService
                                   StartDate = activity.StartDate,
                                   EndDate = activity.EndDate,
                                   Location = activity.Location,
+                                  Users = activity.Participants,
                                   Factions = (from faction in activity.Factions
                                               select new DetailedFaction()
                                               {
@@ -82,7 +83,7 @@ public class ActivityService : BaseService, IActivityService
 
     public async Task AddUserToActivity(int id, AddUserToActivityRequest model)
     {
-        var user = await GetUserByUserName(model.UserName);
+        var user = await GetUserWithActivityByUserName(model.UserName);
         var activity = await GetActivityById(id);
 
         if (user.Activities.Contains(activity))

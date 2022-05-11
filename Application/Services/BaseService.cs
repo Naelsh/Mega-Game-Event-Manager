@@ -29,9 +29,17 @@ public class BaseService
         return user;
     }
 
-    internal async Task<User> GetUserByUserName(string userName)
+    internal async Task<User> GetUserWithRolesByUserName(string userName)
     {
         var user = await _context.Users.Include(u => u.Roles).FirstOrDefaultAsync(x => x.Username == userName);
+        if (user == null || user.IsDeleted)
+            throw new KeyNotFoundException("User could not be found");
+        return user;
+    }
+
+    internal async Task<User> GetUserWithActivityByUserName(string userName)
+    {
+        var user = await _context.Users.Include(u => u.Activities).FirstOrDefaultAsync(x => x.Username == userName);
         if (user == null || user.IsDeleted)
             throw new KeyNotFoundException("User could not be found");
         return user;
@@ -48,6 +56,14 @@ public class BaseService
     internal async Task<Activity> GetActivityById(int id)
     {
         var activity = await _context.Activities.FindAsync(id);
+        if (activity == null || activity.IsDeleted)
+            throw new KeyNotFoundException("Event not found");
+        return activity;
+    }
+
+    internal async Task<Activity> GetActivityWithParticipantsById(int id)
+    {
+        var activity = await _context.Activities.Include(a => a.Participants).FirstOrDefaultAsync(x => x.Id == id);
         if (activity == null || activity.IsDeleted)
             throw new KeyNotFoundException("Event not found");
         return activity;

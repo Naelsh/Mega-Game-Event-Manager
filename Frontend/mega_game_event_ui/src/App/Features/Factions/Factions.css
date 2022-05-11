@@ -1,0 +1,13 @@
+.faction {
+  background-color: rgb(233, 233, 233);
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: white;
+  padding-left: 10px;
+}
+  .factions h3 {
+    margin-top: 20px;
+    margin-left: 0px;
+  }

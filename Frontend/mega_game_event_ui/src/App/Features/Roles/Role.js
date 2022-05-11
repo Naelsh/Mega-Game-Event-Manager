@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import User from '../Users/User';
+import './Role.css';
 
 export default function Role(props) {
   const [userName, setUserName] = useState("");
@@ -17,7 +18,8 @@ export default function Role(props) {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify({
-          userName: userName
+          userName: userName,
+          activityId: props.activityId
         })
       });
       // let resultJson = await result.json();
@@ -33,12 +35,12 @@ export default function Role(props) {
   }
 
   let users = () => {
-    let users = props.role.users.map((user) => (
+    let items = props.role.users.map((user) => (
       <ul key={user.id}>
         <User user={user} />
       </ul>
     ));
-    return users;
+    return items;
   }
 
   return (

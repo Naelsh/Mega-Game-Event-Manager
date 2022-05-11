@@ -14,37 +14,3 @@
     border-radius: 10px;
     background-color: white;
   }
-
-  .activityDetails .factions{
-    margin: 10px;
-    padding: 0px 50px 20px 30px;
-    padding-left: 20px;
-    padding-right: 40px;
-    border: 1px solid;
-    border-radius: 10px;
-    background-color: white;
-  }
-
-    .activityDetails .factions h3 {
-      margin-top: 20px;
-      margin-left: 0px;
-    }
-
-    .activityDetails .factions p {
-      border: transparent;
-      background-color: lightgray;
-      padding-left: 10px;
-    }
-
-    .activityDetails .faction .role{
-      margin-left: 10px;
-    }
-
-    .activityDetails .faction .role .users{
-      margin-left: 20px;
-    }
-
-    .activityDetails .faction .role .users h5 {
-      font-size: small;
-      text-align: left;
-    }

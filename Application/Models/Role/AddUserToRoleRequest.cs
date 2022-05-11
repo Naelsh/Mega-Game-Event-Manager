@@ -6,4 +6,5 @@ public class AddUserToRoleRequest
 {
     [EmailAddress]
     public string Username { get; set; } = "";
+    public int ActivityId { get; set; } = 0;
 }

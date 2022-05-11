@@ -86,11 +86,11 @@ public class ActivitiesController : BaseController
     }
 
     [HttpPost("{id}/add-user")]
-    public IActionResult AddUser(int id, AddUserToActivityRequest model)
+    public async Task<IActionResult> AddUser(int id, AddUserToActivityRequest model)
     {
         try
         {
-            _service.AddUserToActivity(id, model);
+            await _service.AddUserToActivity(id, model);
         }
         catch (AppException e)
         {
@@ -98,9 +98,9 @@ public class ActivitiesController : BaseController
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e.InnerException);
         }
-        return Ok(new { messsage = "User added successfully" });
+        return Ok(new { message = "User added successfully" });
     }
 
     [HttpPost]
