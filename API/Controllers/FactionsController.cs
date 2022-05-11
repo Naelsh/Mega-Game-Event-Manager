@@ -42,7 +42,18 @@ public class FactionsController : BaseController
     [HttpPost]
     public async Task<IActionResult> Post(FactionPostRequest model)
     {
-        await _service.Post(model);
+        try
+        {
+            await _service.Post(model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "Faction created successfully" });
     }
 
