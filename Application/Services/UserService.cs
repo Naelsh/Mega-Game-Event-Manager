@@ -30,7 +30,7 @@ public class UserService : BaseService, IUserService
 
     public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
-        var user = await GetUserByUserName(model.Username);
+        var user = await GetUserWithRolesByUserName(model.Username);
 
         // validate
         if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))

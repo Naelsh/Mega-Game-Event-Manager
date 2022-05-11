@@ -47,7 +47,7 @@ public class RoleService : BaseService, IRoleService
 
     public async Task AddUserToRole(int id, AddUserToRoleRequest model)
     {
-        var user = await GetUserByUserName(model.Username);
+        var user = await GetUserWithRolesByUserName(model.Username);
         var role = await GetRoleById(id);
         var activity = await GetActivityById(model.ActivityId);
         if (!activity.Participants.Contains(user))
