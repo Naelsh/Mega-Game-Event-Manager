@@ -13,7 +13,7 @@ public interface IRoleService
 {
     Task<IEnumerable<Role>> GetAllRolesForFactionByID(int factionId);
     Task<Role> GetById(int id);
-    void AddUserToRole(int id, AddUserToRoleRequest model);
+    Task AddUserToRole(int id, AddUserToRoleRequest model);
     void Post(RolePostRequest model);
     Task Delete(int id);
     Task Update(int id, RoleUpdateRequest model);
@@ -75,29 +75,15 @@ public class RoleService : BaseService, IRoleService
         _context.SaveChanges();
     }
 
-    public void AddUserToRole(int id, AddUserToRoleRequest model)
+    public async Task AddUserToRole(int id, AddUserToRoleRequest model)
     {
-        var user = _context.Users.Include(u => u.Roles).FirstOrDefault(x => x.Username == model.Username);
-        if (user == null)
-            throw new AppException("User could not be found");
-        var role = _context.Roles.Find(id);
-        if (role == null)
-            throw new AppException("Role could not be found");
+        var user = await GetUserByUserName(model.Username);
+        var role = await GetRoleById(id);
 
         if (user.Roles.Contains(role))
             throw new AppException("Role allready added to user");
 
         user.Roles.Add(role);
         _context.SaveChanges();
-    }
-
-    private async Task<Faction> GetFactionById(int id)
-    {
-        var faction = await _context.Factions.FindAsync(id);
-        if (faction == null)
-            throw new AppException("Activity could not be found");
-        if (faction.IsDeleted)
-            throw new AppException("Activity could not be found");
-        return faction;
     }
 }
