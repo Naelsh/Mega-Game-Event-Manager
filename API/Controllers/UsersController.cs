@@ -78,7 +78,7 @@ public class UsersController : BaseController
         }
         catch (Exception ex)
         {
-            BadRequest(ex.Message);
+            return BadRequest(ex.Message);
         }
 
         return Ok(user);
@@ -98,17 +98,30 @@ public class UsersController : BaseController
         }
         catch (Exception ex)
         {
-            BadRequest(ex.Message);
+            return BadRequest(ex.Message);
         }
         return Ok(new { message = "Registration successful" });
     }
 
-
-
     [HttpPut("{id}")]
     public IActionResult Update(int id, UserUpdateRequest model)
     {
-        _userService.Update(id, model);
+        try
+        {
+            _userService.Update(id, model);
+        }
+        catch (KeyNotFoundException knfe)
+        {
+            return NotFound(knfe.Message);
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok(new { message = "User updated successfully" });
     }
 

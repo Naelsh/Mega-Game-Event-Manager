@@ -79,7 +79,6 @@ public class UserService : IUserService
     {
         var user = getUser(id);
 
-        // validate
         if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
 
@@ -87,15 +86,13 @@ public class UserService : IUserService
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-        if (model.ActivityId > 0)
-        {
-            user.Activities.Add(_context.Activities.Find(model.ActivityId));
-        }
+        if (model.ActivityId < 1)
+            throw new ArgumentOutOfRangeException("ActivityId out of range");
+        user.Activities.Add(_context.Activities.Find(model.ActivityId));
 
-        if (model.RoleId > 0)
-        {
-            user.Roles.Add(_context.Roles.Find(model.RoleId));
-        }
+        if (model.RoleId < 1)
+            throw new ArgumentOutOfRangeException("RoleId out of range");
+        user.Roles.Add(_context.Roles.Find(model.RoleId));
 
         // copy model to user and save
         _mapper.Map(model, user);
