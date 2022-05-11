@@ -85,18 +85,21 @@ public class UserService : BaseService, IUserService
         if (!string.IsNullOrEmpty(model.Password))
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-        var activity = _context.Activities.Find(model.ActivityId);
-        if (activity == null)
-            throw new KeyNotFoundException("Activity not found");
-        user.Activities.Add(activity);
-
-        var role = _context.Roles.Find(model.RoleId);
-        if (role == null)
-            throw new KeyNotFoundException("Role not found");
-        user.Roles.Add(role);
-
         // copy model to user and save
         _mapper.Map(model, user);
+
+        if (model.ActivityId > 0)
+        {
+            var activity = await GetActivityById(model.ActivityId);
+            user.Activities.Add(activity);
+        }
+
+        if (model.RoleId > 0)
+        {
+            var role = await GetRoleById(model.RoleId);
+            user.Roles.Add(role);
+        }
+
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }

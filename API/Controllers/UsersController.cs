@@ -27,12 +27,12 @@ public class UsersController : BaseController
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public IActionResult Authenticate(AuthenticateRequest model)
+    public async Task<IActionResult> Authenticate(AuthenticateRequest model)
     {
         AuthenticateResponse response = null;
         try
         {
-            response = _userService.Authenticate(model);
+            response = await _userService.Authenticate(model);
         }
         catch (ArgumentException ae)
         {
@@ -65,12 +65,12 @@ public class UsersController : BaseController
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         User user = null;
         try
         {
-            user = _userService.GetById(id);
+            user = await _userService.GetById(id);
         }
         catch (KeyNotFoundException knfe)
         {
