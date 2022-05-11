@@ -132,10 +132,6 @@ public class UsersController : BaseController
         {
             return NotFound(knfe.Message);
         }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            return BadRequest(ex.Message);
-        }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
