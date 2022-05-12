@@ -5,11 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 var service = builder.Services;
 
 service.AddIdentityServer()
-    .AddInMemoryApiResources(IdConfig.apiResources)
-    .AddInMemoryApiScopes(IdConfig.apiScopes)
-    .AddInMemoryClients(IdConfig.clients)
-    .AddInMemoryIdentityResources(IdConfig.identityResources)
-    .AddTestUsers(IdConfig.testUsers)
+    .AddInMemoryApiResources(IdConfig.ApiResources)
+    .AddInMemoryApiScopes(IdConfig.ApiScopes)
+    .AddInMemoryClients(IdConfig.Clients)
+    .AddInMemoryIdentityResources(IdConfig.IdentityResources)
+    .AddTestUsers(IdConfig.TestUsers)
     .AddDeveloperSigningCredential();
 
 var app = builder.Build();

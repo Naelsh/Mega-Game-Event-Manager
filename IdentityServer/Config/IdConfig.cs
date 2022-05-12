@@ -8,7 +8,7 @@ namespace IdentityServer.Config;
 public class IdConfig
 {
     // testusers
-    public static List<TestUser> testUsers =>
+    public static List<TestUser> TestUsers =>
         new List<TestUser>
         {
             new TestUser
@@ -23,21 +23,21 @@ public class IdConfig
             }
         };
 
-    public static IEnumerable<IdentityResource> identityResources =>
+    public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile()
         };
 
-    public static IEnumerable<ApiScope> apiScopes =>
+    public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
         {
             new ApiScope("MegagameAPI.write"),
             new ApiScope("MegagameAPI.read")
         };
 
-    public static IEnumerable<ApiResource> apiResources =>
+    public static IEnumerable<ApiResource> ApiResources =>
         new ApiResource[]
         {
             new ApiResource("MegagameAPI")
@@ -47,7 +47,7 @@ public class IdConfig
             }
         };
 
-    public static IEnumerable<Client> clients =>
+    public static IEnumerable<Client> Clients =>
         new Client[]
         {
             new Client()
