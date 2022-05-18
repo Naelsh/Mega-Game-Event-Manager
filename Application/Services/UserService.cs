@@ -19,18 +19,21 @@ public interface IUserService
 
 public class UserService : BaseService, IUserService
 {
+    private readonly IJwtUtils _jwtUtils;
     private readonly IMapper _mapper;
 
     public UserService(
         DataContext context,
+        IJwtUtils jwtUtils,
         IMapper mapper) :base(context)
     {
+        _jwtUtils = jwtUtils;
         _mapper = mapper;
     }
 
     public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
-        var user = await GetUserWithRolesByUserName(model.Username);
+        var user = await GetUserByUserName(model.Username);
 
         // validate
         if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
@@ -38,6 +41,7 @@ public class UserService : BaseService, IUserService
 
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);
+        response.Token = _jwtUtils.GenerateToken(user);
         return response;
     }
 
