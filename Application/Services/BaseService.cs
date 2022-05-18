@@ -29,6 +29,14 @@ public class BaseService
         return user;
     }
 
+    internal async Task<User> GetUserByUserName(string userName)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == userName);
+        if (user == null || user.IsDeleted)
+            throw new KeyNotFoundException("User could not be found");
+        return user;
+    }
+
     internal async Task<User> GetUserWithRolesByUserName(string userName)
     {
         var user = await _context.Users.Include(u => u.Roles).FirstOrDefaultAsync(x => x.Username == userName);
