@@ -23,6 +23,7 @@ services.AddAutoMapper(typeof(AutoMapperProfile));
 
 services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
+services.AddScoped<IJwtUtils, JwtUtils>();
 services.AddScoped<IUserService, UserService>();
 services.AddScoped<IActivityService, ActivityService>();
 services.AddScoped<IFactionService, FactionService>();
@@ -38,14 +39,13 @@ if (app.Environment.IsDevelopment())
     //app.UseSwaggerUI();
 }
 
-
-
 app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
 
 app.UseExceptionHandler("/error");
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
