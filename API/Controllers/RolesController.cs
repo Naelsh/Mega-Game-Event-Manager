@@ -3,10 +3,12 @@ using Application.Models.Role;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize]
 public class RolesController : BaseController
 {
     private readonly IRoleService _service;

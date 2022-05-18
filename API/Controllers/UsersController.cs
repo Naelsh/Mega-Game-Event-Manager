@@ -1,9 +1,9 @@
-﻿using Application.Authentication;
-using Application.Helpers;
+﻿using Application.Helpers;
 using Application.Models.User;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -25,7 +25,6 @@ public class UsersController : BaseController
         _appSettings = appSettings.Value;
     }
 
-    [AllowAnonymous]
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(AuthenticateRequest model)
     {
@@ -45,6 +44,7 @@ public class UsersController : BaseController
         return Ok(response);
     }
 
+    [Authorize]
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -64,6 +64,7 @@ public class UsersController : BaseController
         return Ok(users);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -84,7 +85,6 @@ public class UsersController : BaseController
         return Ok(user);
     }
 
-    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest model)
     {
@@ -103,6 +103,7 @@ public class UsersController : BaseController
         return Ok(new { message = "Registration successful" });
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, UserUpdateRequest model)
     {
@@ -121,6 +122,7 @@ public class UsersController : BaseController
         return Ok(new { message = "User updated successfully" });
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

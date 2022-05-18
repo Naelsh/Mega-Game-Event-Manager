@@ -1,13 +1,14 @@
-﻿using Application.Authentication;
-using Application.Helpers;
+﻿using Application.Helpers;
 using Application.Models.Activity;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize]
 public class ActivitiesController : BaseController
 {
     private readonly IActivityService _service;

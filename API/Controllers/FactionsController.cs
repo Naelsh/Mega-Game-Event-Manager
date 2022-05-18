@@ -2,10 +2,12 @@
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize]
 public class FactionsController : BaseController
 {
     private readonly IFactionService _service;
