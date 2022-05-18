@@ -23,16 +23,16 @@ namespace Persistence
         {
             #region ConnectionStrings
             // Laptop
-            string connectionString =
-                @"Data Source=DESKTOP-EJ7V12L\SQLEXPRESS01;" +
-                @"Initial Catalog = MegaGameEventManager;" +
-                @"Integrated Security=true";
-
-            //Stationär
             //string connectionString =
-            //    @"Data Source=DESKTOP-JC3MCVE;" +
+            //    @"Data Source=DESKTOP-EJ7V12L\SQLEXPRESS01;" +
             //    @"Initial Catalog = MegaGameEventManager;" +
             //    @"Integrated Security=true";
+
+            //Stationär
+            string connectionString =
+                @"Data Source=DESKTOP-JC3MCVE;" +
+                @"Initial Catalog = MegaGameEventManager;" +
+                @"Integrated Security=true";
             #endregion
 
             if (!optionsBuilder.IsConfigured)
