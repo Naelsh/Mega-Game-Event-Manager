@@ -4,6 +4,7 @@ using Application.Models.Activity;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -23,6 +24,8 @@ public class ActivitiesController : BaseController
     }
 
     [HttpGet]
+    [AllowAnonymous]
+    [EnableCors("PublicAPI")]
     public async Task<IActionResult> GetAll()
     {
         IEnumerable<Activity> activities;
