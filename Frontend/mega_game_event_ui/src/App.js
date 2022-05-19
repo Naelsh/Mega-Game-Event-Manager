@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './App/Features/Home/derp';
+import Home from './App/Features/Home/Home';
 import CreateAccountForm from './App/Features/Login/CreateAccount';
 import Login from './App/Features/Login/Login';
 import ActivityList from './App/Features/Activities/ActivityList';
