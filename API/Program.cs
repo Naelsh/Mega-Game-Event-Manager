@@ -9,7 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
-services.AddCors();
+// get the allowed origins from app config file
+var allowedOrigions = builder.Configuration.GetValue<string>("AllowedOrigins")?.Split(",") ?? new string[0];
+services.AddCors(opt =>
+    {
+        opt.AddPolicy("FrontendInternal", b => b.WithOrigins(allowedOrigions).AllowAnyMethod().AllowAnyHeader());
+        opt.AddPolicy("PublicAPI", b => b.AllowAnyOrigin().WithMethods("Get").AllowAnyHeader());
+    }
+);
 services.AddControllers();
 
 services.AddAuthentication("Bearer").AddIdentityServerAuthentication("Bearer", opt => {
@@ -39,12 +46,9 @@ if (app.Environment.IsDevelopment())
     //app.UseSwaggerUI();
 }
 
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseRouting();
+app.UseCors("FrontendInternal");
 
-app.UseExceptionHandler("/error");
 app.UseMiddleware<JwtMiddleware>();
 
 app.UseAuthentication();
