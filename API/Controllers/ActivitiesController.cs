@@ -1,9 +1,10 @@
-﻿using Application.Authentication;
+﻿
 using Application.Helpers;
 using Application.Models.Activity;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,6 @@ public class ActivitiesController : BaseController
     }
 
     [HttpGet]
-    [AllowAnonymous]
     [EnableCors("PublicAPI")]
     public async Task<IActionResult> GetAll()
     {
@@ -45,6 +45,7 @@ public class ActivitiesController : BaseController
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         Activity activity;
@@ -69,6 +70,7 @@ public class ActivitiesController : BaseController
 
 
     [HttpGet("{id}/details")]
+    [Authorize]
     public async Task<IActionResult> GetDetailed(int id)
     {
         DetailedActivity detailedActivity;
@@ -89,6 +91,7 @@ public class ActivitiesController : BaseController
     }
 
     [HttpPost("{id}/add-user")]
+    [Authorize]
     public async Task<IActionResult> AddUser(int id, AddUserToActivityRequest model)
     {
         try
@@ -107,6 +110,7 @@ public class ActivitiesController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Post(ActivityPostRequest model)
     {
         try
@@ -121,6 +125,7 @@ public class ActivitiesController : BaseController
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, ActivityUpdateRequest model)
     {
         try
@@ -147,6 +152,7 @@ public class ActivitiesController : BaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         try

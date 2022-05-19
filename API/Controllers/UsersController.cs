@@ -1,9 +1,10 @@
-﻿using Application.Authentication;
+﻿
 using Application.Helpers;
 using Application.Models.User;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -25,7 +26,6 @@ public class UsersController : BaseController
         _appSettings = appSettings.Value;
     }
 
-    [AllowAnonymous]
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(AuthenticateRequest model)
     {
@@ -46,6 +46,7 @@ public class UsersController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     public IActionResult GetAll()
     {
         IEnumerable<User> users = null;
@@ -65,6 +66,7 @@ public class UsersController : BaseController
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         User user = null;
@@ -84,7 +86,6 @@ public class UsersController : BaseController
         return Ok(user);
     }
 
-    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest model)
     {
@@ -104,6 +105,7 @@ public class UsersController : BaseController
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Update(int id, UserUpdateRequest model)
     {
         try
@@ -122,6 +124,7 @@ public class UsersController : BaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         try

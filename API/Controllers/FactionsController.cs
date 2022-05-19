@@ -2,6 +2,7 @@
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,6 +22,7 @@ public class FactionsController : BaseController
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         Faction faction;
@@ -40,6 +42,7 @@ public class FactionsController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Post(FactionPostRequest model)
     {
         try
@@ -58,6 +61,7 @@ public class FactionsController : BaseController
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, FactionUpdateRequest model)
     {
         try
@@ -76,6 +80,7 @@ public class FactionsController : BaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         try

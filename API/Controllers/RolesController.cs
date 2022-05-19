@@ -3,6 +3,7 @@ using Application.Models.Role;
 using Application.Services;
 using AutoMapper;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -22,6 +23,7 @@ public class RolesController : BaseController
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         Role role;
@@ -41,6 +43,7 @@ public class RolesController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Post(RolePostRequest model)
     {
         try
@@ -59,6 +62,7 @@ public class RolesController : BaseController
     }
 
     [HttpPost("{id}/add-user")]
+    [Authorize]
     public async Task<IActionResult> AddUserToRole(int id, AddUserToRoleRequest model)
     {
         try
@@ -81,6 +85,7 @@ public class RolesController : BaseController
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Put(int id, RoleUpdateRequest model)
     {
         try
@@ -99,6 +104,7 @@ public class RolesController : BaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         try
