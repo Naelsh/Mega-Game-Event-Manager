@@ -97,6 +97,8 @@ export default function ActivityDetails() {
       });
 
       if (result.status === 200) {
+        var joined = users.concat({firstName:"", lastName:"", username:userName});
+        setUsers(joined);
         setUserName("");
         setMessage("User added successfully");
       } else {
@@ -126,6 +128,8 @@ export default function ActivityDetails() {
       });
       
       if (result.status === 200) {
+        var joined = factions.concat({ id:0, name:factionName, description:factionDescription, activityId:id, roles:[]});
+        setFactions(joined);
         setFactionName("");
         setFactionDescription("");
         setAddFactionMessage("Faction added successfully");
